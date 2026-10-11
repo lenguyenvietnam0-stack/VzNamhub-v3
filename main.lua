@@ -1,4 +1,4 @@
-local CoreGui, Players, TweenService, UserInputService = game:GetService("CoreGui"), game:GetService("Players"), game:GetService("TweenService"), game:GetService("UserInputService")
+local CoreGui, Players, TweenService, UserInputService, TeleportService, GuiService = game:GetService("CoreGui"), game:GetService("Players"), game:GetService("TweenService"), game:GetService("UserInputService"), game:GetService("TeleportService"), game:GetService("GuiService")
 local localPlayer = Players.LocalPlayer
 
 if CoreGui:FindFirstChild("VzNamHubGui") then CoreGui.VzNamHubGui:Destroy() end
@@ -6,18 +6,30 @@ if CoreGui:FindFirstChild("VzNamHubGui") then CoreGui.VzNamHubGui:Destroy() end
 local LastSelectedScriptBtn, LastSelectedScriptStroke = nil, nil
 local RegisteredScripts = {}
 
+getgenv().AutoRejoinActive = getgenv().AutoRejoinActive or false
+if not getgenv().RejoinConnection then
+    getgenv().RejoinConnection = GuiService.ErrorMessageChanged:Connect(function()
+        if getgenv().AutoRejoinActive then
+            task.wait(3)
+            if #Players:GetPlayers() <= 1 then
+                TeleportService:Teleport(game.PlaceId, localPlayer)
+            else
+                TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, localPlayer)
+            end
+        end
+    end)
+end
+
 local VzNamGui = Instance.new("ScreenGui", CoreGui) VzNamGui.Name = "VzNamHubGui" VzNamGui.ResetOnSpawn = false
 
 local avatarUrl = "rbxassetid://6031094678"
 pcall(function() avatarUrl = Players:GetUserThumbnailAsync(localPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420) end)
 
--- NÚT TOGGLE
 local ToggleBtn = Instance.new("ImageButton", VzNamGui)
 ToggleBtn.Name, ToggleBtn.BackgroundColor3, ToggleBtn.Position, ToggleBtn.Size, ToggleBtn.Active, ToggleBtn.Draggable, ToggleBtn.Image = "ToggleBtn", Color3.fromRGB(30, 30, 30), UDim2.new(0.05, 0, 0.2, 0), UDim2.new(0, 55, 0, 55), true, true, avatarUrl
 Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(1, 0)
 local ToggleStroke = Instance.new("UIStroke", ToggleBtn) ToggleStroke.Color, ToggleStroke.Thickness = Color3.fromRGB(255, 255, 255), 2
 
--- MENU CHÍNH
 local MainFrame = Instance.new("Frame", VzNamGui)
 MainFrame.Name, MainFrame.BackgroundColor3, MainFrame.Position, MainFrame.Size, MainFrame.ClipsDescendants = "MainFrame", Color3.fromRGB(255, 255, 255), UDim2.new(0.5, -170, 0.5, -150), UDim2.new(0, 370, 0, 310), true
 Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 12)
@@ -27,7 +39,6 @@ RainbowGradient.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.f
 TweenService:Create(RainbowGradient, TweenInfo.new(8, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, false), {Rotation = 360}):Play()
 local FrameStroke = Instance.new("UIStroke", MainFrame) FrameStroke.Color, FrameStroke.Thickness = Color3.fromRGB(255, 255, 255), 2
 
--- TITLE BAR
 local TitleBar = Instance.new("Frame", MainFrame)
 TitleBar.Name, TitleBar.Size, TitleBar.BackgroundColor3, TitleBar.BackgroundTransparency = "TitleBar", UDim2.new(1, 0, 0, 40), Color3.fromRGB(0, 0, 0), 0.6
 Instance.new("UICorner", TitleBar).CornerRadius = UDim.new(0, 12)
@@ -46,9 +57,8 @@ local HeaderAvatar = Instance.new("ImageLabel", TitleBar) HeaderAvatar.Position,
 Instance.new("UICorner", HeaderAvatar).CornerRadius = UDim.new(1, 0)
 
 local TitleText = Instance.new("TextLabel", TitleBar)
-TitleText.Position, TitleText.Size, TitleText.BackgroundTransparency, TitleText.Text, TitleText.TextColor3, TitleText.TextSize, TitleText.Font, TitleText.TextXAlignment = UDim2.new(0, 45, 0, 0), UDim2.new(1, -50, 1, 0), 1, "TỔNG HỢP | 👑VzNam Hub v3👑|", Color3.fromRGB(255, 255, 255), 13, Enum.Font.SourceSansBold, Enum.TextXAlignment.Left
+TitleText.Position, TitleText.Size, TitleText.BackgroundTransparency, TitleText.Text, TitleText.TextColor3, TitleText.TextSize, TitleText.Font, TitleText.TextXAlignment = UDim2.new(0, 45, 0, 0), UDim2.new(1, -50, 1, 0), 1, "TỔNG HỢP | 👑VzNam Hub v2👑|", Color3.fromRGB(255, 255, 255), 13, Enum.Font.SourceSansBold, Enum.TextXAlignment.Left
 
--- THANH TAB DỌC
 local TabBarLeftScroll = Instance.new("ScrollingFrame", MainFrame)
 TabBarLeftScroll.Position, TabBarLeftScroll.Size, TabBarLeftScroll.BackgroundTransparency, TabBarLeftScroll.CanvasSize, TabBarLeftScroll.ScrollBarThickness = UDim2.new(0, 8, 0, 48), UDim2.new(0, 100, 1, -56), 1, UDim2.new(0, 0, 0, 340), 3
 local LeftLayout = Instance.new("UIListLayout", TabBarLeftScroll) LeftLayout.Padding = UDim.new(0, 8)
@@ -139,142 +149,57 @@ local function AddScriptButton(scrollParent, Name, Callback)
     table.insert(RegisteredScripts, {Name = Name, Callback = Callback})
 end
 
--- =========================================================================
--- ĐOẠN THÊM SCRIPT CHO TỪNG TAB (TỪ TAB 1 ĐẾN TAB 5):
--- =========================================================================
-
--- ----------------- TAB 1: STEAL AN EGG -----------------
--- NO KEY:
-AddScriptButton(tabContainers[1].NoKeyScroll, "1. Hop sv1 người(nokey)", function()
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
-end)
-AddScriptButton(tabContainers[1].NoKeyScroll, "2. FyyCommunity(lúc có key lúc no key)", function()
-    loadstring(game:HttpGet("https://FyyCommunity.my.id"))()
-end)
-AddScriptButton(tabContainers[1].NoKeyScroll, "3. Chilli Hub V4(nokey)", function()
-    loadstring(game:HttpGet("https://id.tomroblox.com/raw/kairoblox/chilli-hub-viet-hoa-v4"))()
-end)
-AddScriptButton(tabContainers[1].NoKeyScroll, "4. Night hub(nokey)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/WhiteX1208/Scripts/refs/heads/main/StealAnEggs.luau"))()
-end)
-
--- CÓ KEY:
-AddScriptButton(tabContainers[1].HasKeyScroll, "1. Lemon Hub v4(có key)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/owenzeke99-tech/lennonhubv4/refs/heads/main/lennonhubkeyless.txt", true))()    
-end)
-AddScriptButton(tabContainers[1].HasKeyScroll, "2. Hoshi hub(có key)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/napun87/stealanegg/refs/heads/main/hosi.lua"))()   
-end)
-AddScriptButton(tabContainers[1].HasKeyScroll, "3. Bigfroot(có key)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/hanniii1/Loader/refs/heads/main/BFLoader.lua"))()    
-end)
-AddScriptButton(tabContainers[1].HasKeyScroll, "4. Chữ A(ajjans)|(có key)", function()
-    loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/359e97f8618e9008afe5f496184ebb7c.lua"))()
-end)
-AddScriptButton(tabContainers[1].HasKeyScroll, "5. Speed hub(có key)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()
-end)
-AddScriptButton(tabContainers[1].HasKeyScroll, "6. Neohub(có key)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/neohubdev/script/main/script"))()
-end)
-AddScriptButton(tabContainers[1].HasKeyScroll, "7. Real kid(có key)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/realkidhub/realkid/refs/heads/main/main.lua"))()
-end)
-AddScriptButton(tabContainers[1].HasKeyScroll, "8. Chilli v2(có key)", function()
-    loadstring(game:HttpGet("https://gist.githubusercontent.com/ronnei/1fa67c56dd9af203b192d15e752928e5/raw/4e2d5105640e09a008b4ae6df23f9708cadfef06/chilliv2-stealanegg"))()
-end)
-
--- ----------------- TAB 2: BLOXKID -----------------
--- NO KEY:
-AddScriptButton(tabContainers[2].NoKeyScroll, "1. RedzHub v2 (no key)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/UCT-hub/main/refs/heads/main/redz-v2"))()
-end)
-AddScriptButton(tabContainers[2].NoKeyScroll, "2. Quantumx Hub(nokey)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/QuantumOnyx.lua"))()
-end)
-
--- CÓ KEY:
-AddScriptButton(tabContainers[2].HasKeyScroll, "1. Speed Hub(có key)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()
-end)
-AddScriptButton(tabContainers[2].HasKeyScroll, "2. Omg Hub(có key)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Omgshit/Scripts/main/MainLoader.lua"))()
-end)
-AddScriptButton(tabContainers[2].HasKeyScroll, "3. TeddyHub(có key)", function()
-    repeat task.wait() until game:IsLoaded() and game:GetService("Players") and game.Players.LocalPlayer and game.Players.LocalPlayer:FindFirstChild("PlayerGui")
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/teddyhubdev/diepvy/refs/heads/main/TeddyHub.lua"))()
-end)
-AddScriptButton(tabContainers[2].HasKeyScroll, "4. Gravity Hub(có key)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-GravityHub/BloxFruit/refs/heads/main/Main.lua"))()
-end)
-AddScriptButton(tabContainers[2].HasKeyScroll, "5. Realkid hub(có key)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/realkidhub/realkid/refs/heads/main/main.lua"))()
-end)
-AddScriptButton(tabContainers[2].HasKeyScroll, "6. BananaHub(có key)", function()
-    repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
-    getgenv().Team = "Marines"
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/obiyeueim/vthangsitink/main/BananaHub.lua"))()
-end)
-
--- ----------------- TAB 3 -----------------
--- NO KEY:
-AddScriptButton(tabContainers[3].NoKeyScroll, "1. break and steal an egg(không sài dc nx)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/joustingmatch/Ouroboros/main/loader.lua"))()
-end)
--- CÓ KEY:
-AddScriptButton(tabContainers[3].HasKeyScroll, "1. Tên Script Có Key (Tab 3)", function()
-    -- DÁN SCRIPT VÀO ĐÂY
-end)
-
--- ----------------- TAB 4 -----------------
--- NO KEY:
-AddScriptButton(tabContainers[4].NoKeyScroll, "1. Tên Script No Key (Tab 4)", function()
-    -- DÁN SCRIPT VÀO ĐÂY
-end)
--- CÓ KEY:
-AddScriptButton(tabContainers[4].HasKeyScroll, "1. Tên Script Có Key (Tab 4)", function()
-    -- DÁN SCRIPT VÀO ĐÂY
-end)
-
--- ----------------- TAB 5 -----------------
--- NO KEY:
-AddScriptButton(tabContainers[5].NoKeyScroll, "1. Tên Script No Key (Tab 5)", function()
-    -- DÁN SCRIPT VÀO ĐÂY
-end)
--- CÓ KEY:
-AddScriptButton(tabContainers[5].HasKeyScroll, "1. Tên Script Có Key (Tab 5)", function()
-    -- DÁN SCRIPT VÀO ĐÂY
-end)
+AddScriptButton(tabContainers[1].NoKeyScroll, "1. Hop sv1 người(nokey)", function() loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))() end)
+AddScriptButton(tabContainers[1].NoKeyScroll, "2. FyyCommunity", function() loadstring(game:HttpGet("https://FyyCommunity.my.id"))() end)
+AddScriptButton(tabContainers[1].HasKeyScroll, "1. Lemon Hub v4", function() loadstring(game:HttpGet("https://raw.githubusercontent.com/owenzeke99-tech/lennonhubv4/refs/heads/main/lennonhubkeyless.txt", true))() end)
+AddScriptButton(tabContainers[2].NoKeyScroll, "1. RedzHub v2", function() loadstring(game:HttpGet("https://raw.githubusercontent.com/UCT-hub/main/refs/heads/main/redz-v2"))() end)
 
 
--- ================= TAB 6: KHÁC (ĐÃ RÚT GỌN TỐI ĐA) =================
+-- ================= TAB 6: KHÁC (BỔ SUNG AUTO REJOIN & AUTO EXECUTE VZNAMHUB) =================
 local t6 = tabContainers[6].Scroll
 local selScript, isAuto = nil, false
 
+-- 1. DROPDOWN CHỌN SCRIPT
 local dropBtn = Instance.new("TextButton", t6)
-dropBtn.Size, dropBtn.BackgroundColor3, dropBtn.Text, dropBtn.TextColor3, dropBtn.Font, dropBtn.TextSize, dropBtn.TextXAlignment = UDim2.new(1,0,0,36), Color3.fromRGB(240,240,240), " 📜 Chọn Script: Chưa chọn...", Color3.fromRGB(40,40,40), Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left
+dropBtn.Size, dropBtn.BackgroundColor3, dropBtn.Text, dropBtn.TextColor3, dropBtn.Font, dropBtn.TextSize, dropBtn.TextXAlignment = UDim2.new(1,0,0,36), Color3.fromRGB(240,240,240), " 📜 Chọn Script Auto Load...", Color3.fromRGB(40,40,40), Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left
 Instance.new("UICorner", dropBtn).CornerRadius = UDim.new(0, 6)
 local dropStroke = Instance.new("UIStroke", dropBtn) dropStroke.Color = Color3.fromRGB(200,200,200)
 
 local dropFrame = Instance.new("ScrollingFrame", t6)
-dropFrame.Size, dropFrame.BackgroundColor3, dropFrame.CanvasSize, dropFrame.ScrollBarThickness, dropFrame.Visible = UDim2.new(1,0,0,120), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false
+dropFrame.Size, dropFrame.BackgroundColor3, dropFrame.CanvasSize, dropFrame.ScrollBarThickness, dropFrame.Visible = UDim2.new(1,0,0,100), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false
 Instance.new("UICorner", dropFrame).CornerRadius = UDim.new(0, 6)
 Instance.new("UIListLayout", dropFrame).Padding = UDim.new(0, 4)
 
+-- 2. NÚT HỦY CHỌN
 local clearBtn = Instance.new("TextButton", t6)
-clearBtn.Size, clearBtn.BackgroundColor3, clearBtn.Text, clearBtn.TextColor3, clearBtn.Font, clearBtn.TextSize = UDim2.new(1,0,0,30), Color3.fromRGB(150,150,150), "🚫 Hủy chọn ❌", Color3.fromRGB(255,255,255), Enum.Font.SourceSansBold, 12
+clearBtn.Size, clearBtn.BackgroundColor3, clearBtn.Text, clearBtn.TextColor3, clearBtn.Font, clearBtn.TextSize = UDim2.new(1,0,0,28), Color3.fromRGB(150,150,150), "🚫 Hủy chọn Script ❌", Color3.fromRGB(255,255,255), Enum.Font.SourceSansBold, 12
 Instance.new("UICorner", clearBtn).CornerRadius = UDim.new(0, 6)
 
+-- 3. NÚT AUTO LOAD SCRIPT CHỌN
 local toggleAuto = Instance.new("TextButton", t6)
-toggleAuto.Size, toggleAuto.BackgroundColor3, toggleAuto.Text, toggleAuto.TextColor3, toggleAuto.Font, toggleAuto.TextSize = UDim2.new(1,0,0,38), Color3.fromRGB(200,50,50), "Auto Load: TẮT ❌", Color3.fromRGB(255,255,255), Enum.Font.SourceSansBold, 14
+toggleAuto.Size, toggleAuto.BackgroundColor3, toggleAuto.Text, toggleAuto.TextColor3, toggleAuto.Font, toggleAuto.TextSize = UDim2.new(1,0,0,34), Color3.fromRGB(200,50,50), "Auto Load Script Chạy: TẮT ❌", Color3.fromRGB(255,255,255), Enum.Font.SourceSansBold, 13
 Instance.new("UICorner", toggleAuto).CornerRadius = UDim.new(0, 8)
 
+-- 4. NÚT AUTO REJOIN KHI VĂNG GAME
+local toggleRejoin = Instance.new("TextButton", t6)
+toggleRejoin.Size, toggleRejoin.BackgroundColor3, toggleRejoin.Text, toggleRejoin.TextColor3, toggleRejoin.Font, toggleRejoin.TextSize = UDim2.new(1,0,0,34), getgenv().AutoRejoinActive and Color3.fromRGB(50,200,50) or Color3.fromRGB(200,50,50), getgenv().AutoRejoinActive and "Auto Rejoin Khi Văng: BẬT ✅" or "Auto Rejoin Khi Văng: TẮT ❌", Color3.fromRGB(255,255,255), Enum.Font.SourceSansBold, 13
+Instance.new("UICorner", toggleRejoin).CornerRadius = UDim.new(0, 8)
+
+-- 5. NÚT AUTO EXECUTE VZNAMHUB KHI VÔ LẠI GAME
+local autoExecFile = "vznamhub_autoexec.lua"
+local isAutoExecOn = (isfile and isfile(autoExecFile)) or false
+
+local toggleAutoHub = Instance.new("TextButton", t6)
+toggleAutoHub.Size, toggleAutoHub.BackgroundColor3, toggleAutoHub.Text, toggleAutoHub.TextColor3, toggleAutoHub.Font, toggleAutoHub.TextSize = UDim2.new(1,0,0,34), isAutoExecOn and Color3.fromRGB(50,200,50) or Color3.fromRGB(200,50,50), isAutoExecOn and "Auto Load Hub Khi Vào Game: BẬT ✅" or "Auto Load Hub Khi Vào Game: TẮT ❌", Color3.fromRGB(255,255,255), Enum.Font.SourceSansBold, 13
+Instance.new("UICorner", toggleAutoHub).CornerRadius = UDim.new(0, 8)
+
+-- XỬ LÝ DROPDOWN
 dropBtn.MouseButton1Click:Connect(function() dropFrame.Visible = not dropFrame.Visible end)
 
 local h = 0
 for _, scr in ipairs(RegisteredScripts) do
     local item = Instance.new("TextButton", dropFrame)
-    item.Size, item.BackgroundColor3, item.Text, item.TextColor3, item.Font, item.TextSize, item.TextXAlignment = UDim2.new(1,0,0,30), Color3.fromRGB(255,255,255), "  ▶ " .. scr.Name, Color3.fromRGB(50,50,50), Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left
+    item.Size, item.BackgroundColor3, item.Text, item.TextColor3, item.Font, item.TextSize, item.TextXAlignment = UDim2.new(1,0,0,28), Color3.fromRGB(255,255,255), "  ▶ " .. scr.Name, Color3.fromRGB(50,50,50), Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left
     Instance.new("UICorner", item).CornerRadius = UDim.new(0, 4)
     item.MouseButton1Click:Connect(function()
         selScript = scr
@@ -282,18 +207,18 @@ for _, scr in ipairs(RegisteredScripts) do
         dropFrame.Visible = false
         dropStroke.Color = Color3.fromRGB(255,50,50)
     end)
-    h = h + 34
+    h = h + 32
 end
 dropFrame.CanvasSize = UDim2.new(0,0,0,h)
 
 clearBtn.MouseButton1Click:Connect(function()
     selScript = nil
-    dropBtn.Text = " 📜 Chọn Script: Chưa chọn..."
+    dropBtn.Text = " 📜 Chọn Script Auto Load..."
     dropStroke.Color = Color3.fromRGB(200,200,200)
     if isAuto then
         isAuto = false
         toggleAuto.BackgroundColor3 = Color3.fromRGB(200,50,50)
-        toggleAuto.Text = "Auto Load: TẮT ❌"
+        toggleAuto.Text = "Auto Load Script Chạy: TẮT ❌"
     end
 end)
 
@@ -302,11 +227,44 @@ toggleAuto.MouseButton1Click:Connect(function()
     isAuto = not isAuto
     if isAuto then
         toggleAuto.BackgroundColor3 = Color3.fromRGB(50,200,50)
-        toggleAuto.Text = "Auto Load: BẬT ✅"
+        toggleAuto.Text = "Auto Load Script Chạy: BẬT ✅"
         pcall(selScript.Callback)
     else
         toggleAuto.BackgroundColor3 = Color3.fromRGB(200,50,50)
-        toggleAuto.Text = "Auto Load: TẮT ❌"
+        toggleAuto.Text = "Auto Load Script Chạy: TẮT ❌"
+    end
+end)
+
+-- BẬT/TẮT AUTO REJOIN KHI MẤT KẾT NỐI
+toggleRejoin.MouseButton1Click:Connect(function()
+    getgenv().AutoRejoinActive = not getgenv().AutoRejoinActive
+    if getgenv().AutoRejoinActive then
+        toggleRejoin.BackgroundColor3 = Color3.fromRGB(50,200,50)
+        toggleRejoin.Text = "Auto Rejoin Khi Văng: BẬT ✅"
+    else
+        toggleRejoin.BackgroundColor3 = Color3.fromRGB(200,50,50)
+        toggleRejoin.Text = "Auto Rejoin Khi Văng: TẮT ❌"
+    end
+end)
+
+-- BẬT/TẮT AUTO LOAD HUB KHI VÀO LẠI GAME
+toggleAutoHub.MouseButton1Click:Connect(function()
+    if writefile and delfile then
+        if isfile and isfile(autoExecFile) then
+            delfile(autoExecFile)
+            if queue_on_teleport then queue_on_teleport("") end
+            toggleAutoHub.BackgroundColor3 = Color3.fromRGB(200,50,50)
+            toggleAutoHub.Text = "Auto Load Hub Khi Vào Game: TẮT ❌"
+        else
+            -- Lưu link raw loadstring vào AutoExec
+            local hubCode = 'repeat task.wait() until game:IsLoaded() loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()' 
+            writefile(autoExecFile, hubCode)
+            if queue_on_teleport then queue_on_teleport(hubCode) end
+            toggleAutoHub.BackgroundColor3 = Color3.fromRGB(50,200,50)
+            toggleAutoHub.Text = "Auto Load Hub Khi Vào Game: BẬT ✅"
+        end
+    else
+        toggleAutoHub.Text = " ⚠️ Executor không hỗ trợ Save File!"
     end
 end)
 
