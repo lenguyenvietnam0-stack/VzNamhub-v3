@@ -60,7 +60,7 @@ local HeaderAvatar = Instance.new("ImageLabel", TitleBar) HeaderAvatar.Position,
 Instance.new("UICorner", HeaderAvatar).CornerRadius = UDim.new(1, 0)
 
 local TitleText = Instance.new("TextLabel", TitleBar)
-TitleText.Position, TitleText.Size, TitleText.BackgroundTransparency, TitleText.Text, TitleText.TextColor3, TitleText.TextSize, TitleText.Font, TitleText.TextXAlignment = UDim2.new(0, 45, 0, 0), UDim2.new(1, -50, 1, 0), 1, "TỔNG HỢP | 👑VzNam Hub v2👑|", Color3.fromRGB(255, 105, 180), 13, Enum.Font.SourceSansBold, Enum.TextXAlignment.Left
+TitleText.Position, TitleText.Size, TitleText.BackgroundTransparency, TitleText.Text, TitleText.TextColor3, TitleText.TextSize, TitleText.Font, TitleText.TextXAlignment = UDim2.new(0, 45, 0, 0), UDim2.new(1, -50, 1, 0), 1, "🌸TỔNG HỢP | 👑VzNam Hub v3👑|🌸", Color3.fromRGB(255, 105, 180), 13, Enum.Font.SourceSansBold, Enum.TextXAlignment.Left
 
 local TabBarLeftScroll = Instance.new("ScrollingFrame", MainFrame)
 TabBarLeftScroll.Position, TabBarLeftScroll.Size, TabBarLeftScroll.BackgroundTransparency, TabBarLeftScroll.CanvasSize, TabBarLeftScroll.ScrollBarThickness = UDim2.new(0, 8, 0, 48), UDim2.new(0, 100, 1, -56), 1, UDim2.new(0, 0, 0, 340), 3
@@ -108,7 +108,7 @@ local function CreateCustomContainer(visible)
 end
 
 local tabContainers, mainTabButtons = {}, {}
-local tabNames = {"steal an egg", "blox kid", "break and steal an egg", "Tab 4", "Tab 5", "khác"}
+local tabNames = {"🌸STEAL AN EGG🌸", "🌸BLOX FRUIT🌸", "🌸BREAL AN STEAL AN EGG🌸", "CHƯA", "CHƯA", "👾KHÁC👾"}
 
 for i = 1, 6 do
     local isFirst = (i == 1)
