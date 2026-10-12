@@ -201,6 +201,7 @@ AddScriptButton(tabContainers[4].HasKeyScroll, "1. Tên Script Có Key (Tab 4)",
 
 -- TAB 5
 AddScriptButton(tabContainers[5].NoKeyScroll, "1. Tên Script No Key (Tab 5)", function() end)
+AddScriptButton(tabContainers[5].HasKeyScroll, "1. Tên Script Có Key (Tab 5)", function() end)
 local t6 = tabContainers[6].Scroll
 t6.ClipsDescendants = true
 local selScript, isAuto = nil, false
