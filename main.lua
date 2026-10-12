@@ -204,19 +204,20 @@ AddScriptButton(tabContainers[4].HasKeyScroll, "1. Tên Script Có Key (Tab 4)",
 AddScriptButton(tabContainers[5].NoKeyScroll, "1. Tên Script No Key (Tab 5)", function() end)
 AddScriptButton(tabContainers[5].HasKeyScroll, "1. Tên Script Có Key (Tab 5)", function() end)
 -- =========================================================================
--- PHẦN 3: TAB 6 (KHÁC) - AUTO LOAD, AUTO REJOIN & KẾT NỐI
+-- PHẦN 3: TAB 6 (KHÁC) - AUTO LOAD, CHỌN MÀU MENU & GIẢM FPS (BLACK SCREEN)
 -- =========================================================================
 local t6 = tabContainers[6].Scroll
 local selScript, isAuto = nil, false
 
+-- 1. CHỌN SCRIPT AUTO LOAD
 local dropBtn = Instance.new("TextButton", t6)
-dropBtn.Size, dropBtn.BackgroundColor3, dropBtn.Text, dropBtn.Font, dropBtn.TextSize, dropBtn.TextXAlignment = UDim2.new(1,0,0,36), Color3.fromRGB(240,240,240), " 📜 Chọn Script Auto Load...", Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left
+dropBtn.Size, dropBtn.BackgroundColor3, dropBtn.Text, dropBtn.Font, dropBtn.TextSize, dropBtn.TextXAlignment = UDim2.new(1,0,0,34), Color3.fromRGB(240,240,240), " 📜 Chọn Script Auto Load...", Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left
 Instance.new("UICorner", dropBtn).CornerRadius = UDim.new(0, 6)
 local dropStroke = Instance.new("UIStroke", dropBtn) dropStroke.Color = Color3.fromRGB(200,200,200)
 ApplyBlackTextWhiteOutline(dropBtn)
 
 local dropFrame = Instance.new("ScrollingFrame", t6)
-dropFrame.Size, dropFrame.BackgroundColor3, dropFrame.CanvasSize, dropFrame.ScrollBarThickness, dropFrame.Visible = UDim2.new(1,0,0,100), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false
+dropFrame.Size, dropFrame.BackgroundColor3, dropFrame.CanvasSize, dropFrame.ScrollBarThickness, dropFrame.Visible = UDim2.new(1,0,0,90), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false
 Instance.new("UICorner", dropFrame).CornerRadius = UDim.new(0, 6)
 Instance.new("UIListLayout", dropFrame).Padding = UDim.new(0, 4)
 
@@ -226,22 +227,9 @@ Instance.new("UICorner", clearBtn).CornerRadius = UDim.new(0, 6)
 ApplyBlackTextWhiteOutline(clearBtn)
 
 local toggleAuto = Instance.new("TextButton", t6)
-toggleAuto.Size, toggleAuto.BackgroundColor3, toggleAuto.Text, toggleAuto.Font, toggleAuto.TextSize = UDim2.new(1,0,0,34), Color3.fromRGB(200,50,50), "Auto Load Script Chạy: TẮT ❌", Enum.Font.SourceSansBold, 13
-Instance.new("UICorner", toggleAuto).CornerRadius = UDim.new(0, 8)
+toggleAuto.Size, toggleAuto.BackgroundColor3, toggleAuto.Text, toggleAuto.Font, toggleAuto.TextSize = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Auto Load Script Chạy: TẮT ❌", Enum.Font.SourceSansBold, 12
+Instance.new("UICorner", toggleAuto).CornerRadius = UDim.new(0, 6)
 ApplyBlackTextWhiteOutline(toggleAuto)
-
-local toggleRejoin = Instance.new("TextButton", t6)
-toggleRejoin.Size, toggleRejoin.BackgroundColor3, toggleRejoin.Text, toggleRejoin.Font, toggleRejoin.TextSize = UDim2.new(1,0,0,34), getgenv().AutoRejoinActive and Color3.fromRGB(50,200,50) or Color3.fromRGB(200,50,50), getgenv().AutoRejoinActive and "Auto Rejoin Khi Văng: BẬT ✅" or "Auto Rejoin Khi Văng: TẮT ❌", Enum.Font.SourceSansBold, 13
-Instance.new("UICorner", toggleRejoin).CornerRadius = UDim.new(0, 8)
-ApplyBlackTextWhiteOutline(toggleRejoin)
-
-local autoExecFile = "vznamhub_autoexec.lua"
-local isAutoExecOn = (isfile and isfile(autoExecFile)) or false
-
-local toggleAutoHub = Instance.new("TextButton", t6)
-toggleAutoHub.Size, toggleAutoHub.BackgroundColor3, toggleAutoHub.Text, toggleAutoHub.Font, toggleAutoHub.TextSize = UDim2.new(1,0,0,34), isAutoExecOn and Color3.fromRGB(50,200,50) or Color3.fromRGB(200,50,50), isAutoExecOn and "Auto Load Hub Khi Vào Game: BẬT ✅" or "Auto Load Hub Khi Vào Game: TẮT ❌", Enum.Font.SourceSansBold, 13
-Instance.new("UICorner", toggleAutoHub).CornerRadius = UDim.new(0, 8)
-ApplyBlackTextWhiteOutline(toggleAutoHub)
 
 dropBtn.MouseButton1Click:Connect(function() dropFrame.Visible = not dropFrame.Visible end)
 
@@ -285,33 +273,90 @@ toggleAuto.MouseButton1Click:Connect(function()
     end
 end)
 
-toggleRejoin.MouseButton1Click:Connect(function()
-    getgenv().AutoRejoinActive = not getgenv().AutoRejoinActive
-    if getgenv().AutoRejoinActive then
-        toggleRejoin.BackgroundColor3 = Color3.fromRGB(50,200,50)
-        toggleRejoin.Text = "Auto Rejoin Khi Văng: BẬT ✅"
+-- 2. TÍNH NĂNG ĐỔI MÀU MENU
+local colorList = {
+    {Name = "🌈 Màu Cầu Vồng (Gốc)", Color = nil},
+    {Name = "🌸 Hồng Kẹo Đắng", Color = Color3.fromRGB(255, 105, 180)},
+    {Name = "🔴 Đỏ Đậm", Color = Color3.fromRGB(220, 20, 60)},
+    {Name = "🔵 Xanh Dương Neon", Color = Color3.fromRGB(0, 191, 255)},
+    {Name = "🟢 Xanh Lá Cây", Color = Color3.fromRGB(50, 205, 50)},
+    {Name = "🟡 Vàng Nổi Bật", Color = Color3.fromRGB(255, 215, 0)},
+    {Name = "🟣 Tím Mộng Mơ", Color = Color3.fromRGB(138, 43, 226)},
+    {Name = "⬛ Xám Tối Elegant", Color = Color3.fromRGB(50, 50, 50)}
+}
+
+local selectedColorObj = colorList[1]
+local isColorApplied = false
+
+local colorDropBtn = Instance.new("TextButton", t6)
+colorDropBtn.Size, colorDropBtn.BackgroundColor3, colorDropBtn.Text, colorDropBtn.Font, colorDropBtn.TextSize, colorDropBtn.TextXAlignment = UDim2.new(1,0,0,34), Color3.fromRGB(240,240,240), " 🎨 Chọn Màu Menu...", Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left
+Instance.new("UICorner", colorDropBtn).CornerRadius = UDim.new(0, 6)
+ApplyBlackTextWhiteOutline(colorDropBtn)
+
+local colorDropFrame = Instance.new("ScrollingFrame", t6)
+colorDropFrame.Size, colorDropFrame.BackgroundColor3, colorDropFrame.CanvasSize, colorDropFrame.ScrollBarThickness, colorDropFrame.Visible = UDim2.new(1,0,0,100), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false
+Instance.new("UICorner", colorDropFrame).CornerRadius = UDim.new(0, 6)
+Instance.new("UIListLayout", colorDropFrame).Padding = UDim.new(0, 4)
+
+colorDropBtn.MouseButton1Click:Connect(function() colorDropFrame.Visible = not colorDropFrame.Visible end)
+
+local ch = 0
+for _, cItem in ipairs(colorList) do
+    local cBtn = Instance.new("TextButton", colorDropFrame)
+    cBtn.Size, cBtn.BackgroundColor3, cBtn.Text, cBtn.Font, cBtn.TextSize, cBtn.TextXAlignment = UDim2.new(1,0,0,26), Color3.fromRGB(255,255,255), " " .. cItem.Name, Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left
+    Instance.new("UICorner", cBtn).CornerRadius = UDim.new(0, 4)
+    ApplyBlackTextWhiteOutline(cBtn)
+    cBtn.MouseButton1Click:Connect(function()
+        selectedColorObj = cItem
+        colorDropBtn.Text = " 🎨 Đã chọn: " .. cItem.Name
+        colorDropFrame.Visible = false
+    end)
+    ch = ch + 30
+end
+colorDropFrame.CanvasSize = UDim2.new(0,0,0,ch)
+
+local toggleColorBtn = Instance.new("TextButton", t6)
+toggleColorBtn.Size, toggleColorBtn.BackgroundColor3, toggleColorBtn.Text, toggleColorBtn.Font, toggleColorBtn.TextSize = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Màu Menu Tùy Chỉnh: TẮT ❌", Enum.Font.SourceSansBold, 12
+Instance.new("UICorner", toggleColorBtn).CornerRadius = UDim.new(0, 6)
+ApplyBlackTextWhiteOutline(toggleColorBtn)
+
+toggleColorBtn.MouseButton1Click:Connect(function()
+    isColorApplied = not isColorApplied
+    if isColorApplied then
+        toggleColorBtn.BackgroundColor3 = Color3.fromRGB(50,200,50)
+        toggleColorBtn.Text = "Màu Menu Tùy Chỉnh: BẬT ✅"
+        if selectedColorObj.Color then
+            RainbowGradient.Enabled = false
+            MainFrame.BackgroundColor3 = selectedColorObj.Color
+        else
+            RainbowGradient.Enabled = true
+            MainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        end
     else
-        toggleRejoin.BackgroundColor3 = Color3.fromRGB(200,50,50)
-        toggleRejoin.Text = "Auto Rejoin Khi Văng: TẮT ❌"
+        toggleColorBtn.BackgroundColor3 = Color3.fromRGB(200,50,50)
+        toggleColorBtn.Text = "Màu Menu Tùy Chỉnh: TẮT ❌"
+        RainbowGradient.Enabled = true
+        MainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     end
 end)
 
-toggleAutoHub.MouseButton1Click:Connect(function()
-    if writefile and delfile then
-        if isfile and isfile(autoExecFile) then
-            delfile(autoExecFile)
-            if queue_on_teleport then queue_on_teleport("") end
-            toggleAutoHub.BackgroundColor3 = Color3.fromRGB(200,50,50)
-            toggleAutoHub.Text = "Auto Load Hub Khi Vào Game: TẮT ❌"
-        else
-            local hubCode = 'repeat task.wait() until game:IsLoaded()' 
-            writefile(autoExecFile, hubCode)
-            if queue_on_teleport then queue_on_teleport(hubCode) end
-            toggleAutoHub.BackgroundColor3 = Color3.fromRGB(50,200,50)
-            toggleAutoHub.Text = "Auto Load Hub Khi Vào Game: BẬT ✅"
-        end
+-- 3. TÍNH NĂNG GIẢM FPS (BLACK SCREEN)
+local isFpsModeOn = false
+local toggleFpsBtn = Instance.new("TextButton", t6)
+toggleFpsBtn.Size, toggleFpsBtn.BackgroundColor3, toggleFpsBtn.Text, toggleFpsBtn.Font, toggleFpsBtn.TextSize = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Màn Hình Đen Giảm FPS: TẮT ❌", Enum.Font.SourceSansBold, 12
+Instance.new("UICorner", toggleFpsBtn).CornerRadius = UDim.new(0, 6)
+ApplyBlackTextWhiteOutline(toggleFpsBtn)
+
+toggleFpsBtn.MouseButton1Click:Connect(function()
+    isFpsModeOn = not isFpsModeOn
+    if isFpsModeOn then
+        toggleFpsBtn.BackgroundColor3 = Color3.fromRGB(50,200,50)
+        toggleFpsBtn.Text = "Màn Hình Đen Giảm FPS: BẬT ✅"
+        BlackScreenFrame.Visible = true
     else
-        toggleAutoHub.Text = " ⚠️ Executor không hỗ trợ Save File!"
+        toggleFpsBtn.BackgroundColor3 = Color3.fromRGB(200,50,50)
+        toggleFpsBtn.Text = "Màn Hình Đen Giảm FPS: TẮT ❌"
+        BlackScreenFrame.Visible = false
     end
 end)
 
