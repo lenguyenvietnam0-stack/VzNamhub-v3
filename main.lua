@@ -213,7 +213,7 @@ t6:GetPropertyChangedSignal("CanvasPosition"):Connect(function()
     if musicDropFrame then musicDropFrame.Visible = false end
 end)
 
--- 1. Chọn script auto load
+-- 1. CHỌN SCRIPT AUTO LOAD
 local dropBtn = Instance.new("TextButton", t6)
 dropBtn.Size, dropBtn.BackgroundColor3, dropBtn.Text, dropBtn.Font, dropBtn.TextSize, dropBtn.TextXAlignment, dropBtn.ZIndex = UDim2.new(1,0,0,34), Color3.fromRGB(240,240,240), " 📜 Chọn Script Auto Load...", Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left, 10
 Instance.new("UICorner", dropBtn).CornerRadius = UDim.new(0, 6)
@@ -281,7 +281,7 @@ toggleAuto.MouseButton1Click:Connect(function()
     end
 end)
 
--- 2. Chọn màu menu
+-- 2. CHỌN MÀU MENU
 local colorList = {
     {Name = "🌈 Màu Cầu Vồng (Gốc)", Color = nil},
     {Name = "🌸 Hồng Kẹo Đắng", Color = Color3.fromRGB(255, 105, 180)},
@@ -352,7 +352,7 @@ toggleColorBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- 3. Màn hình đen giảm FPS toàn màn hình
+-- 3. MÀN HÌNH ĐEN GIẢM FPS TOÀN MÀN HÌNH
 local isFpsModeOn = false
 local toggleFpsBtn = Instance.new("TextButton", t6)
 toggleFpsBtn.Size, toggleFpsBtn.BackgroundColor3, toggleFpsBtn.Text, toggleFpsBtn.Font, toggleFpsBtn.TextSize, toggleFpsBtn.ZIndex = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Màn Hình Đen Giảm FPS: TẮT ❌", Enum.Font.SourceSansBold, 12, 8
@@ -372,7 +372,7 @@ toggleFpsBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- 4. Phát nhạc background (Trật tự đúng: Bật/Tắt nhạc -> Nhập ID tùy chỉnh -> Chọn Nhạc Nền)
+-- 4. PHÁT NHẠC BACKGROUND (THỨ TỰ CHUẨN: NHẬP ID -> CHỌN NHẠC -> BẬT/TẮT NHẠC Ở DƯỚI CÙNG)
 local HubSound = SoundService:FindFirstChild("VzNamHubSound") or Instance.new("Sound", SoundService)
 HubSound.Name = "VzNamHubSound"
 HubSound.Looped = true
@@ -387,18 +387,13 @@ local presetMusics = {
 
 local currentSoundId = presetMusics[1].Id
 
-local isMusicPlaying = false
-local toggleMusicBtn = Instance.new("TextButton", t6)
-toggleMusicBtn.Size, toggleMusicBtn.BackgroundColor3, toggleMusicBtn.Text, toggleMusicBtn.Font, toggleMusicBtn.TextSize, toggleMusicBtn.ZIndex = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Phát Nhạc Background: TẮT ❌", Enum.Font.SourceSansBold, 12, 8
-Instance.new("UICorner", toggleMusicBtn).CornerRadius = UDim.new(0, 6)
-ApplyBlackTextWhiteOutline(toggleMusicBtn)
-
--- Ô nhập Sound ID tùy chỉnh (nằm ngay trên nút chọn nhạc nền)
+-- [1] Ô nhập Sound ID tùy chỉnh (nằm sát trên nút chọn nhạc)
 local customIdBox = Instance.new("TextBox", t6)
 customIdBox.Size, customIdBox.BackgroundColor3, customIdBox.PlaceholderText, customIdBox.Text, customIdBox.Font, customIdBox.TextSize, customIdBox.ZIndex = UDim2.new(1,0,0,30), Color3.fromRGB(240,240,240), "Nhập Sound ID tùy chỉnh...", "", Enum.Font.SourceSansSemibold, 12, 8
 Instance.new("UICorner", customIdBox).CornerRadius = UDim.new(0, 6)
 ApplyBlackTextWhiteOutline(customIdBox)
 
+-- [2] Nút Chọn Nhạc Nền...
 local musicDropBtn = Instance.new("TextButton", t6)
 musicDropBtn.Size, musicDropBtn.BackgroundColor3, musicDropBtn.Text, musicDropBtn.Font, musicDropBtn.TextSize, musicDropBtn.TextXAlignment, musicDropBtn.ZIndex = UDim2.new(1,0,0,34), Color3.fromRGB(240,240,240), " 🎵 Chọn Nhạc Nền...", Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left, 10
 Instance.new("UICorner", musicDropBtn).CornerRadius = UDim.new(0, 6)
@@ -408,6 +403,13 @@ local musicDropFrame = Instance.new("ScrollingFrame", t6)
 musicDropFrame.Size, musicDropFrame.BackgroundColor3, musicDropFrame.CanvasSize, musicDropFrame.ScrollBarThickness, musicDropFrame.Visible, musicDropFrame.ZIndex = UDim2.new(1,0,0,90), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 20
 Instance.new("UICorner", musicDropFrame).CornerRadius = UDim.new(0, 6)
 Instance.new("UIListLayout", musicDropFrame).Padding = UDim.new(0, 4)
+
+-- [3] Nút Bật/Tắt Phát Nhạc Background (Nằm ở dưới cùng)
+local isMusicPlaying = false
+local toggleMusicBtn = Instance.new("TextButton", t6)
+toggleMusicBtn.Size, toggleMusicBtn.BackgroundColor3, toggleMusicBtn.Text, toggleMusicBtn.Font, toggleMusicBtn.TextSize, toggleMusicBtn.ZIndex = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Phát Nhạc Background: TẮT ❌", Enum.Font.SourceSansBold, 12, 8
+Instance.new("UICorner", toggleMusicBtn).CornerRadius = UDim.new(0, 6)
+ApplyBlackTextWhiteOutline(toggleMusicBtn)
 
 musicDropBtn.MouseButton1Click:Connect(function() 
     musicDropFrame.Visible = not musicDropFrame.Visible 
