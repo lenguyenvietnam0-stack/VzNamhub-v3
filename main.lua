@@ -144,8 +144,8 @@ local function CreateCustomContainer(visible)
     local frame = Instance.new("Frame", MainFrame) 
     frame.Position, frame.Size, frame.BackgroundTransparency, frame.Visible, frame.ZIndex, frame.ClipsDescendants = UDim2.new(0, 114, 0, 48), UDim2.new(1, -122, 1, -56), 1, visible, 6, true
     local scroll = Instance.new("ScrollingFrame", frame) 
-    scroll.Position, scroll.Size, scroll.BackgroundTransparency, scroll.ScrollBarThickness, scroll.ZIndex, scroll.ClipsDescendants = UDim2.new(0, 0, 0, 0), UDim2.new(1, 0, 1, 0), 1, 4, 7, true
-    scroll.CanvasSize = UDim2.new(0, 0, 0, 450)
+    scroll.Position, scroll.Size, scroll.BackgroundTransparency, scroll.ScrollBarThickness, scroll.ZIndex, scroll.ClipsDescendants = false
+    scroll.CanvasSize = UDim2.new(0, 0, 0, 550)
     local scrollLayout = Instance.new("UIListLayout", scroll)
     scrollLayout.Padding = UDim.new(0, 8)
     scrollLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -236,7 +236,7 @@ AddScriptButton(tabContainers[4].HasKeyScroll, "1. Tên Script Có Key (Tab 4)",
 AddScriptButton(tabContainers[5].NoKeyScroll, "1. Tên Script No Key (Tab 5)", function() end)
 AddScriptButton(tabContainers[5].HasKeyScroll, "1. Tên Script Có Key (Tab 5)", function() end)
 local t6 = tabContainers[6].Scroll
-t6.ClipsDescendants = true
+t6.ClipsDescendants = false
 local selScript, isAuto = nil, false
 
 -- 1. GROUP AUTO LOAD SCRIPT
@@ -249,7 +249,7 @@ ApplyBlackTextWhiteOutline(dropBtn)
 
 local dropFrame = Instance.new("ScrollingFrame", t6)
 dropFrame.LayoutOrder = 2
-dropFrame.Size, dropFrame.BackgroundColor3, dropFrame.CanvasSize, dropFrame.ScrollBarThickness, dropFrame.Visible, dropFrame.ZIndex = UDim2.new(1,0,0,90), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 20
+dropFrame.Size, dropFrame.BackgroundColor3, dropFrame.CanvasSize, dropFrame.ScrollBarThickness, dropFrame.Visible, dropFrame.ZIndex = UDim2.new(1,0,0,100), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 30
 Instance.new("UICorner", dropFrame).CornerRadius = UDim.new(0, 6)
 Instance.new("UIListLayout", dropFrame).Padding = UDim.new(0, 4)
 
@@ -287,7 +287,7 @@ ApplyBlackTextWhiteOutline(colorDropBtn)
 
 local colorDropFrame = Instance.new("ScrollingFrame", t6)
 colorDropFrame.LayoutOrder = 6
-colorDropFrame.Size, colorDropFrame.BackgroundColor3, colorDropFrame.CanvasSize, colorDropFrame.ScrollBarThickness, colorDropFrame.Visible, colorDropFrame.ZIndex = UDim2.new(1,0,0,100), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 20
+colorDropFrame.Size, colorDropFrame.BackgroundColor3, colorDropFrame.CanvasSize, colorDropFrame.ScrollBarThickness, colorDropFrame.Visible, colorDropFrame.ZIndex = UDim2.new(1,0,0,110), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 30
 Instance.new("UICorner", colorDropFrame).CornerRadius = UDim.new(0, 6)
 Instance.new("UIListLayout", colorDropFrame).Padding = UDim.new(0, 4)
 
@@ -305,7 +305,7 @@ toggleFpsBtn.Size, toggleFpsBtn.BackgroundColor3, toggleFpsBtn.Text, toggleFpsBt
 Instance.new("UICorner", toggleFpsBtn).CornerRadius = UDim.new(0, 6)
 ApplyBlackTextWhiteOutline(toggleFpsBtn)
 
--- 4. GROUP NHẠC BACKGROUND
+-- 4. GROUP NHẠC BACKGROUND & ÂM LƯỢNG / THỜI GIAN
 local HubSound = SoundService:FindFirstChild("VzNamHubSound") or Instance.new("Sound", SoundService)
 HubSound.Name = "VzNamHubSound"
 HubSound.Looped = true
@@ -322,7 +322,7 @@ local currentSoundId = presetMusics[1].Id
 -- Ô nhập Sound ID tùy chỉnh (LayoutOrder = 9)
 local customIdBox = Instance.new("TextBox", t6)
 customIdBox.LayoutOrder = 9
-customIdBox.Size, customIdBox.BackgroundColor3, customIdBox.PlaceholderText, customIdBox.Text, customIdBox.Font, customIdBox.TextSize, customIdBox.ZIndex = UDim2.new(1,0,0,30), Color3.fromRGB(240,240,240), "Nhập Sound ID tùy chỉnh...", "", Enum.Font.SourceSansSemibold, 12, 8
+customIdBox.Size, customIdBox.BackgroundColor3, customIdBox.PlaceholderText, customIdBox.Text, customIdBox.Font, customIdBox.TextSize, customIdBox.ZIndex = UDim2.new(1,0,0,32), Color3.fromRGB(240,240,240), "Nhập Sound ID tùy chỉnh...", "", Enum.Font.SourceSansSemibold, 12, 10
 Instance.new("UICorner", customIdBox).CornerRadius = UDim.new(0, 6)
 ApplyBlackTextWhiteOutline(customIdBox)
 
@@ -335,15 +335,80 @@ ApplyBlackTextWhiteOutline(musicDropBtn)
 
 local musicDropFrame = Instance.new("ScrollingFrame", t6)
 musicDropFrame.LayoutOrder = 11
-musicDropFrame.Size, musicDropFrame.BackgroundColor3, musicDropFrame.CanvasSize, musicDropFrame.ScrollBarThickness, musicDropFrame.Visible, musicDropFrame.ZIndex = UDim2.new(1,0,0,90), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 20
+musicDropFrame.Size, musicDropFrame.BackgroundColor3, musicDropFrame.CanvasSize, musicDropFrame.ScrollBarThickness, musicDropFrame.Visible, musicDropFrame.ZIndex = UDim2.new(1,0,0,100), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 30
 Instance.new("UICorner", musicDropFrame).CornerRadius = UDim.new(0, 6)
 Instance.new("UIListLayout", musicDropFrame).Padding = UDim.new(0, 4)
 
--- Nút Phát Nhạc Background (LayoutOrder = 12)
+-- [LayoutOrder = 12] Hàng ngang chứa: [Thanh âm lượng bên trái] & [Thời gian bên phải]
+local musicControlRow = Instance.new("Frame", t6)
+musicControlRow.LayoutOrder = 12
+musicControlRow.Size = UDim2.new(1, 0, 0, 36)
+musicControlRow.BackgroundTransparency = 1
+musicControlRow.ZIndex = 10
+
+local volFrame = Instance.new("Frame", musicControlRow)
+volFrame.Size, volFrame.Position, volFrame.BackgroundColor3, volFrame.ZIndex = UDim2.new(0.5, -4, 1, 0), UDim2.new(0, 0, 0, 0), Color3.fromRGB(240, 240, 240), 10
+volFrame.BorderSizePixel = 0
+Instance.new("UICorner", volFrame).CornerRadius = UDim.new(0, 6)
+
+local volumeLabel = Instance.new("TextLabel", volFrame)
+volumeLabel.Size, volumeLabel.Position, volumeLabel.BackgroundTransparency, volumeLabel.Text, volumeLabel.Font, volumeLabel.TextSize, volumeLabel.TextXAlignment, volumeLabel.ZIndex = UDim2.new(0, 50, 1, 0), UDim2.new(0, 4, 0, 0), 1, "🔊 Vol:", Enum.Font.SourceSansSemibold, 11, Enum.TextXAlignment.Left, 11
+ApplyBlackTextWhiteOutline(volumeLabel)
+
+local volSliderBg = Instance.new("Frame", volFrame)
+volSliderBg.Size, volSliderBg.Position, volSliderBg.BackgroundColor3, volSliderBg.ZIndex = UDim2.new(1, -56, 0, 8), UDim2.new(0, 52, 0.5, -4), Color3.fromRGB(200, 200, 200), 11
+volSliderBg.BorderSizePixel = 0
+Instance.new("UICorner", volSliderBg).CornerRadius = UDim.new(1, 0)
+
+local volSliderFill = Instance.new("Frame", volSliderBg)
+volSliderFill.Size, volSliderFill.BackgroundColor3, volSliderFill.ZIndex = UDim2.new(0.5, 0, 1, 0), Color3.fromRGB(50, 200, 50), 12
+volSliderFill.BorderSizePixel = 0
+Instance.new("UICorner", volSliderFill).CornerRadius = UDim.new(1, 0)
+
+local isDraggingVol = false
+volSliderBg.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then isDraggingVol = true end
+end)
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then isDraggingVol = false end
+end)
+UserInputService.InputChanged:Connect(function(input)
+    if isDraggingVol and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local absPos, absSize = volSliderBg.AbsolutePosition.X, volSliderBg.AbsoluteSize.X
+        local relX = math.clamp((input.Position.X - absPos) / absSize, 0, 1)
+        volSliderFill.Size = UDim2.new(relX, 0, 1, 0)
+        HubSound.Volume = relX
+        volumeLabel.Text = "🔊 " .. math.floor(relX * 100) .. "%"
+    end
+end)
+
+local timeFrame = Instance.new("Frame", musicControlRow)
+timeFrame.Size, timeFrame.Position, timeFrame.BackgroundColor3, timeFrame.ZIndex = UDim2.new(0.5, -4, 1, 0), UDim2.new(0.5, 4, 0, 0), Color3.fromRGB(240, 240, 240), 10
+timeFrame.BorderSizePixel = 0
+Instance.new("UICorner", timeFrame).CornerRadius = UDim.new(0, 6)
+
+local timeLabel = Instance.new("TextLabel", timeFrame)
+timeLabel.Size, timeLabel.BackgroundTransparency, timeLabel.Text, timeLabel.Font, timeLabel.TextSize, timeLabel.TextXAlignment, timeLabel.ZIndex = UDim2.new(1, 0, 1, 0), 1, "⏱ 0:00 / 0:00", Enum.Font.SourceSansSemibold, 11, Enum.TextXAlignment.Center, 11
+ApplyBlackTextWhiteOutline(timeLabel)
+
+task.spawn(function()
+    while task.wait(0.5) do
+        pcall(function()
+            if HubSound.IsPlaying and HubSound.TimeLength > 0 then
+                local cur, tot = math.floor(HubSound.TimePosition), math.floor(HubSound.TimeLength)
+                timeLabel.Text = string.format("⏱ %d:%02d/%d:%02d", math.floor(cur/60), cur%60, math.floor(tot/60), tot%60)
+            else
+                timeLabel.Text = "⏱ 0:00 / 0:00"
+            end
+        end)
+    end
+end)
+
+-- Nút Bật/Tắt Nhạc Background (LayoutOrder = 13)
 local isMusicPlaying = false
 local toggleMusicBtn = Instance.new("TextButton", t6)
-toggleMusicBtn.LayoutOrder = 12
-toggleMusicBtn.Size, toggleMusicBtn.BackgroundColor3, toggleMusicBtn.Text, toggleMusicBtn.Font, toggleMusicBtn.TextSize, toggleMusicBtn.ZIndex = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Phát Nhạc Background: TẮT ❌", Enum.Font.SourceSansBold, 12, 8
+toggleMusicBtn.LayoutOrder = 13
+toggleMusicBtn.Size, toggleMusicBtn.BackgroundColor3, toggleMusicBtn.Text, toggleMusicBtn.Font, toggleMusicBtn.TextSize, toggleMusicBtn.ZIndex = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Phát Nhạc Background: TẮT ❌", Enum.Font.SourceSansBold, 12, 10
 Instance.new("UICorner", toggleMusicBtn).CornerRadius = UDim.new(0, 6)
 ApplyBlackTextWhiteOutline(toggleMusicBtn)
 
@@ -357,7 +422,7 @@ end)
 local h = 0
 for _, scr in ipairs(RegisteredScripts) do
     local item = Instance.new("TextButton", dropFrame)
-    item.Size, item.BackgroundColor3, item.Text, item.Font, item.TextSize, item.TextXAlignment, item.ZIndex = UDim2.new(1,0,0,28), Color3.fromRGB(255,255,255), "  ▶ " .. scr.Name, Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left, 21
+    item.Size, item.BackgroundColor3, item.Text, item.Font, item.TextSize, item.TextXAlignment, item.ZIndex = UDim2.new(1,0,0,28), Color3.fromRGB(255,255,255), "  ▶ " .. scr.Name, Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left, 31
     Instance.new("UICorner", item).CornerRadius = UDim.new(0, 4)
     ApplyBlackTextWhiteOutline(item)
     item.MouseButton1Click:Connect(function()
@@ -403,7 +468,7 @@ end)
 local ch = 0
 for _, cItem in ipairs(colorList) do
     local cBtn = Instance.new("TextButton", colorDropFrame)
-    cBtn.Size, cBtn.BackgroundColor3, cBtn.Text, cBtn.Font, cBtn.TextSize, cBtn.TextXAlignment, cBtn.ZIndex = UDim2.new(1,0,0,26), Color3.fromRGB(255,255,255), " " .. cItem.Name, Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left, 21
+    cBtn.Size, cBtn.BackgroundColor3, cBtn.Text, cBtn.Font, cBtn.TextSize, cBtn.TextXAlignment, cBtn.ZIndex = UDim2.new(1,0,0,26), Color3.fromRGB(255,255,255), " " .. cItem.Name, Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left, 31
     Instance.new("UICorner", cBtn).CornerRadius = UDim.new(0, 4)
     ApplyBlackTextWhiteOutline(cBtn)
     cBtn.MouseButton1Click:Connect(function()
@@ -457,7 +522,7 @@ end)
 local mh = 0
 for _, mItem in ipairs(presetMusics) do
     local mBtn = Instance.new("TextButton", musicDropFrame)
-    mBtn.Size, mBtn.BackgroundColor3, mBtn.Text, mBtn.Font, mBtn.TextSize, mBtn.TextXAlignment, mBtn.ZIndex = UDim2.new(1,0,0,26), Color3.fromRGB(255,255,255), " " .. mItem.Name, Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left, 21
+    mBtn.Size, mBtn.BackgroundColor3, mBtn.Text, mBtn.Font, mBtn.TextSize, mBtn.TextXAlignment, mBtn.ZIndex = UDim2.new(1,0,0,26), Color3.fromRGB(255,255,255), " " .. mItem.Name, Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left, 31
     Instance.new("UICorner", mBtn).CornerRadius = UDim.new(0, 4)
     ApplyBlackTextWhiteOutline(mBtn)
     mBtn.MouseButton1Click:Connect(function()
