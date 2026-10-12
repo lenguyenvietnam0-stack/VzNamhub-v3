@@ -1,4 +1,4 @@
-local CoreGui, Players, TweenService, UserInputService = game:GetService("CoreGui"), game:GetService("Players"), game:GetService("TweenService"), game:GetService("UserInputService")
+local CoreGui, Players, TweenService, UserInputService, SoundService = game:GetService("CoreGui"), game:GetService("Players"), game:GetService("TweenService"), game:GetService("UserInputService"), game:GetService("SoundService")
 local localPlayer = Players.LocalPlayer
 
 if CoreGui:FindFirstChild("VzNamHubGui") then CoreGui.VzNamHubGui:Destroy() end
@@ -39,7 +39,7 @@ Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(1, 0)
 local ToggleStroke = Instance.new("UIStroke", ToggleBtn) ToggleStroke.Color, ToggleStroke.Thickness = Color3.fromRGB(255, 255, 255), 2
 
 local MainFrame = Instance.new("Frame", VzNamGui)
-MainFrame.Name, MainFrame.BackgroundColor3, MainFrame.Position, MainFrame.Size, MainFrame.ClipsDescendants, MainFrame.ZIndex = "MainFrame", Color3.fromRGB(255, 255, 255), UDim2.new(0.5, -170, 0.5, -150), UDim2.new(0, 370, 0, 310), false, 5
+MainFrame.Name, MainFrame.BackgroundColor3, MainFrame.Position, MainFrame.Size, MainFrame.ClipsDescendants, MainFrame.ZIndex = "MainFrame", Color3.fromRGB(255, 255, 255), UDim2.new(0.5, -170, 0.5, -150), UDim2.new(0, 370, 0, 310), true, 5
 Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 12)
 
 local RainbowGradient = Instance.new("UIGradient", MainFrame)
@@ -109,9 +109,9 @@ end
 
 local function CreateCustomContainer(visible)
     local frame = Instance.new("Frame", MainFrame) 
-    frame.Position, frame.Size, frame.BackgroundTransparency, frame.Visible, frame.ZIndex, frame.ClipsDescendants = UDim2.new(0, 114, 0, 48), UDim2.new(1, -122, 1, -56), 1, visible, 6, false
+    frame.Position, frame.Size, frame.BackgroundTransparency, frame.Visible, frame.ZIndex, frame.ClipsDescendants = UDim2.new(0, 114, 0, 48), UDim2.new(1, -122, 1, -56), 1, visible, 6, true
     local scroll = Instance.new("ScrollingFrame", frame) 
-    scroll.Position, scroll.Size, scroll.BackgroundTransparency, scroll.CanvasSize, scroll.ScrollBarThickness, scroll.ZIndex, scroll.ClipsDescendants = UDim2.new(0, 0, 0, 0), UDim2.new(1, 0, 1, 0), 1, UDim2.new(0, 0, 0, 1000), 4, 7, false
+    scroll.Position, scroll.Size, scroll.BackgroundTransparency, scroll.CanvasSize, scroll.ScrollBarThickness, scroll.ZIndex, scroll.ClipsDescendants = UDim2.new(0, 0, 0, 0), UDim2.new(1, 0, 1, 0), 1, UDim2.new(0, 0, 0, 1000), 4, 7, true
     Instance.new("UIListLayout", scroll).Padding = UDim.new(0, 8)
     return frame, scroll
 end
@@ -162,7 +162,7 @@ local function AddScriptButton(scrollParent, Name, Callback)
 
     table.insert(RegisteredScripts, {Name = Name, Callback = Callback})
 end
--- Tab 1: Steal an egg
+-- TAB 1: STEAL AN EGG
 AddScriptButton(tabContainers[1].NoKeyScroll, "1. Hop sv1 người(nokey)", function() loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))() end)
 AddScriptButton(tabContainers[1].NoKeyScroll, "2. FyyCommunity(lúc có key lúc no key)", function() loadstring(game:HttpGet("https://FyyCommunity.my.id"))() end)
 AddScriptButton(tabContainers[1].NoKeyScroll, "3. Chilli Hub V4(nokey)", function() loadstring(game:HttpGet("https://id.tomroblox.com/raw/kairoblox/chilli-hub-viet-hoa-v4"))() end)
@@ -177,7 +177,7 @@ AddScriptButton(tabContainers[1].HasKeyScroll, "6. Neohub(có key)", function() 
 AddScriptButton(tabContainers[1].HasKeyScroll, "7. Real kid(có key)", function() loadstring(game:HttpGet("https://raw.githubusercontent.com/realkidhub/realkid/refs/heads/main/main.lua"))() end)
 AddScriptButton(tabContainers[1].HasKeyScroll, "8. Chilli v2(có key)", function() loadstring(game:HttpGet("https://gist.githubusercontent.com/ronnei/1fa67c56dd9af203b192d15e752928e5/raw/4e2d5105640e09a008b4ae6df23f9708cadfef06/chilliv2-stealanegg"))() end)
 
--- Tab 2: Blox kid
+-- TAB 2: BLOXKID
 AddScriptButton(tabContainers[2].NoKeyScroll, "1. RedzHub v2 (no key)", function() loadstring(game:HttpGet("https://raw.githubusercontent.com/UCT-hub/main/refs/heads/main/redz-v2"))() end)
 AddScriptButton(tabContainers[2].NoKeyScroll, "2. Quantumx Hub(nokey)", function() loadstring(game:HttpGet("https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/QuantumOnyx.lua"))() end)
 
@@ -188,21 +188,21 @@ AddScriptButton(tabContainers[2].HasKeyScroll, "4. Gravity Hub(có key)", functi
 AddScriptButton(tabContainers[2].HasKeyScroll, "5. Realkid hub(có key)", function() loadstring(game:HttpGet("https://raw.githubusercontent.com/realkidhub/realkid/refs/heads/main/main.lua"))() end)
 AddScriptButton(tabContainers[2].HasKeyScroll, "6. BananaHub(có key)", function() repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer getgenv().Team = "Marines" loadstring(game:HttpGet("https://raw.githubusercontent.com/obiyeueim/vthangsitink/main/BananaHub.lua"))() end)
 
--- Tab 3: Break and steal an egg
+-- TAB 3: BREAK AND STEAL AN EGG
 AddScriptButton(tabContainers[3].NoKeyScroll, "1. break and steal an egg(không sài dc nx)", function() loadstring(game:HttpGet("https://raw.githubusercontent.com/joustingmatch/Ouroboros/main/loader.lua"))() end)
 AddScriptButton(tabContainers[3].HasKeyScroll, "1. Tên Script Có Key (Tab 3)", function() end)
 
--- Tab 4
+-- TAB 4
 AddScriptButton(tabContainers[4].NoKeyScroll, "1. Tên Script No Key (Tab 4)", function() end)
 AddScriptButton(tabContainers[4].HasKeyScroll, "1. Tên Script Có Key (Tab 4)", function() end)
 
--- Tab 5
+-- TAB 5
 AddScriptButton(tabContainers[5].NoKeyScroll, "1. Tên Script No Key (Tab 5)", function() end)
 AddScriptButton(tabContainers[5].HasKeyScroll, "1. Tên Script Có Key (Tab 5)", function() end)
 local t6 = tabContainers[6].Scroll
+t6.ClipsDescendants = true
 local selScript, isAuto = nil, false
 
--- Tự động đóng tất cả menu chọn khi kéo (scroll) bảng để tránh bị trôi ra ngoài
 t6:GetPropertyChangedSignal("CanvasPosition"):Connect(function()
     if dropFrame then dropFrame.Visible = false end
     if colorDropFrame then colorDropFrame.Visible = false end
@@ -211,16 +211,15 @@ end)
 
 -- 1. Chọn script auto load
 local dropBtn = Instance.new("TextButton", t6)
-dropBtn.Size, dropBtn.BackgroundColor3, dropBtn.Text, dropBtn.Font, dropBtn.TextSize, dropBtn.TextXAlignment, dropBtn.ZIndex, dropBtn.ClipsDescendants = UDim2.new(1,0,0,34), Color3.fromRGB(240,240,240), " 📜 Chọn Script Auto Load...", Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left, 10, false
+dropBtn.Size, dropBtn.BackgroundColor3, dropBtn.Text, dropBtn.Font, dropBtn.TextSize, dropBtn.TextXAlignment, dropBtn.ZIndex = UDim2.new(1,0,0,34), Color3.fromRGB(240,240,240), " 📜 Chọn Script Auto Load...", Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left, 10
 Instance.new("UICorner", dropBtn).CornerRadius = UDim.new(0, 6)
 local dropStroke = Instance.new("UIStroke", dropBtn) dropStroke.Color = Color3.fromRGB(200,200,200)
 ApplyBlackTextWhiteOutline(dropBtn)
 
-local dropFrame = Instance.new("ScrollingFrame", dropBtn)
-dropFrame.Position, dropFrame.Size, dropFrame.BackgroundColor3, dropFrame.CanvasSize, dropFrame.ScrollBarThickness, dropFrame.Visible, dropFrame.ZIndex = UDim2.new(0,0,1,4), UDim2.new(1,0,0,90), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 20
+local dropFrame = Instance.new("ScrollingFrame", t6)
+dropFrame.Size, dropFrame.BackgroundColor3, dropFrame.CanvasSize, dropFrame.ScrollBarThickness, dropFrame.Visible, dropFrame.ZIndex = UDim2.new(1,0,0,90), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 20
 Instance.new("UICorner", dropFrame).CornerRadius = UDim.new(0, 6)
 Instance.new("UIListLayout", dropFrame).Padding = UDim.new(0, 4)
-local dropFrameStroke = Instance.new("UIStroke", dropFrame) dropFrameStroke.Color = Color3.fromRGB(180,180,180)
 
 local clearBtn = Instance.new("TextButton", t6)
 clearBtn.Size, clearBtn.BackgroundColor3, clearBtn.Text, clearBtn.Font, clearBtn.TextSize, clearBtn.ZIndex = UDim2.new(1,0,0,28), Color3.fromRGB(150,150,150), "🚫 Hủy chọn Script ❌", Enum.Font.SourceSansBold, 12, 8
@@ -294,15 +293,14 @@ local selectedColorObj = colorList[1]
 local isColorApplied = false
 
 local colorDropBtn = Instance.new("TextButton", t6)
-colorDropBtn.Size, colorDropBtn.BackgroundColor3, colorDropBtn.Text, colorDropBtn.Font, colorDropBtn.TextSize, colorDropBtn.TextXAlignment, colorDropBtn.ZIndex, colorDropBtn.ClipsDescendants = UDim2.new(1,0,0,34), Color3.fromRGB(240,240,240), " 🎨 Chọn Màu Menu...", Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left, 10, false
+colorDropBtn.Size, colorDropBtn.BackgroundColor3, colorDropBtn.Text, colorDropBtn.Font, colorDropBtn.TextSize, colorDropBtn.TextXAlignment, colorDropBtn.ZIndex = UDim2.new(1,0,0,34), Color3.fromRGB(240,240,240), " 🎨 Chọn Màu Menu...", Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left, 10
 Instance.new("UICorner", colorDropBtn).CornerRadius = UDim.new(0, 6)
 ApplyBlackTextWhiteOutline(colorDropBtn)
 
-local colorDropFrame = Instance.new("ScrollingFrame", colorDropBtn)
-colorDropFrame.Position, colorDropFrame.Size, colorDropFrame.BackgroundColor3, colorDropFrame.CanvasSize, colorDropFrame.ScrollBarThickness, colorDropFrame.Visible, colorDropFrame.ZIndex = UDim2.new(0,0,1,4), UDim2.new(1,0,0,100), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 20
+local colorDropFrame = Instance.new("ScrollingFrame", t6)
+colorDropFrame.Size, colorDropFrame.BackgroundColor3, colorDropFrame.CanvasSize, colorDropFrame.ScrollBarThickness, colorDropFrame.Visible, colorDropFrame.ZIndex = UDim2.new(1,0,0,100), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 20
 Instance.new("UICorner", colorDropFrame).CornerRadius = UDim.new(0, 6)
 Instance.new("UIListLayout", colorDropFrame).Padding = UDim.new(0, 4)
-local colorDropFrameStroke = Instance.new("UIStroke", colorDropFrame) colorDropFrameStroke.Color = Color3.fromRGB(180,180,180)
 
 colorDropBtn.MouseButton1Click:Connect(function() 
     colorDropFrame.Visible = not colorDropFrame.Visible 
@@ -350,7 +348,7 @@ toggleColorBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- 3. Bật/Tắt màn hình đen giảm FPS
+-- 3. Màn hình đen giảm FPS
 local isFpsModeOn = false
 local toggleFpsBtn = Instance.new("TextButton", t6)
 toggleFpsBtn.Size, toggleFpsBtn.BackgroundColor3, toggleFpsBtn.Text, toggleFpsBtn.Font, toggleFpsBtn.TextSize, toggleFpsBtn.ZIndex = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Màn Hình Đen Giảm FPS: TẮT ❌", Enum.Font.SourceSansBold, 12, 8
@@ -370,8 +368,7 @@ toggleFpsBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- 4. Phát nhạc background (Đã dời ô Nhập ID sát lên trên nút Chọn Nhạc Nền)
-local SoundService = game:GetService("SoundService")
+-- 4. Phát nhạc background (Ô nhập Sound ID nằm sát trên nút chọn nhạc)
 local HubSound = SoundService:FindFirstChild("VzNamHubSound") or Instance.new("Sound", SoundService)
 HubSound.Name = "VzNamHubSound"
 HubSound.Looped = true
@@ -386,22 +383,20 @@ local presetMusics = {
 
 local currentSoundId = presetMusics[1].Id
 
--- Ô nhập Sound ID tùy chỉnh đặt ngay trên nút chọn nhạc
 local customIdBox = Instance.new("TextBox", t6)
 customIdBox.Size, customIdBox.BackgroundColor3, customIdBox.PlaceholderText, customIdBox.Text, customIdBox.Font, customIdBox.TextSize, customIdBox.ZIndex = UDim2.new(1,0,0,30), Color3.fromRGB(240,240,240), "Nhập Sound ID tùy chỉnh...", "", Enum.Font.SourceSansSemibold, 12, 8
 Instance.new("UICorner", customIdBox).CornerRadius = UDim.new(0, 6)
 ApplyBlackTextWhiteOutline(customIdBox)
 
 local musicDropBtn = Instance.new("TextButton", t6)
-musicDropBtn.Size, musicDropBtn.BackgroundColor3, musicDropBtn.Text, musicDropBtn.Font, musicDropBtn.TextSize, musicDropBtn.TextXAlignment, musicDropBtn.ZIndex, musicDropBtn.ClipsDescendants = UDim2.new(1,0,0,34), Color3.fromRGB(240,240,240), " 🎵 Chọn Nhạc Nền...", Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left, 10, false
+musicDropBtn.Size, musicDropBtn.BackgroundColor3, musicDropBtn.Text, musicDropBtn.Font, musicDropBtn.TextSize, musicDropBtn.TextXAlignment, musicDropBtn.ZIndex = UDim2.new(1,0,0,34), Color3.fromRGB(240,240,240), " 🎵 Chọn Nhạc Nền...", Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left, 10
 Instance.new("UICorner", musicDropBtn).CornerRadius = UDim.new(0, 6)
 ApplyBlackTextWhiteOutline(musicDropBtn)
 
-local musicDropFrame = Instance.new("ScrollingFrame", musicDropBtn)
-musicDropFrame.Position, musicDropFrame.Size, musicDropFrame.BackgroundColor3, musicDropFrame.CanvasSize, musicDropFrame.ScrollBarThickness, musicDropFrame.Visible, musicDropFrame.ZIndex = UDim2.new(0,0,1,4), UDim2.new(1,0,0,90), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 20
+local musicDropFrame = Instance.new("ScrollingFrame", t6)
+musicDropFrame.Size, musicDropFrame.BackgroundColor3, musicDropFrame.CanvasSize, musicDropFrame.ScrollBarThickness, musicDropFrame.Visible, musicDropFrame.ZIndex = UDim2.new(1,0,0,90), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 20
 Instance.new("UICorner", musicDropFrame).CornerRadius = UDim.new(0, 6)
 Instance.new("UIListLayout", musicDropFrame).Padding = UDim.new(0, 4)
-local musicDropFrameStroke = Instance.new("UIStroke", musicDropFrame) musicDropFrameStroke.Color = Color3.fromRGB(180,180,180)
 
 musicDropBtn.MouseButton1Click:Connect(function() 
     musicDropFrame.Visible = not musicDropFrame.Visible 
