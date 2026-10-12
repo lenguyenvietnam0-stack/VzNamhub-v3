@@ -1,5 +1,5 @@
 -- =========================================================================
--- PHẦN 1: KHỞI TẠO GIAO DIỆN VÀ TAB 1
+-- PHẦN 1: KHỞI TẠO GIAO DIỆN VÀ TẠO CHỮ ĐEN VIỀN TRẮNG
 -- =========================================================================
 local CoreGui, Players, TweenService, UserInputService, TeleportService, GuiService = game:GetService("CoreGui"), game:GetService("Players"), game:GetService("TweenService"), game:GetService("UserInputService"), game:GetService("TeleportService"), game:GetService("GuiService")
 local localPlayer = Players.LocalPlayer
@@ -8,6 +8,13 @@ if CoreGui:FindFirstChild("VzNamHubGui") then CoreGui.VzNamHubGui:Destroy() end
 
 local LastSelectedScriptBtn, LastSelectedScriptStroke = nil, nil
 local RegisteredScripts = {}
+
+-- Hàm tự động cài Chữ Đen Viền Trắng nổi bật
+local function ApplyBlackTextWhiteOutline(textObj)
+    textObj.TextColor3 = Color3.fromRGB(0, 0, 0)
+    textObj.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+    textObj.TextStrokeTransparency = 0
+end
 
 getgenv().AutoRejoinActive = getgenv().AutoRejoinActive or false
 if not getgenv().RejoinConnection then
@@ -60,7 +67,8 @@ local HeaderAvatar = Instance.new("ImageLabel", TitleBar) HeaderAvatar.Position,
 Instance.new("UICorner", HeaderAvatar).CornerRadius = UDim.new(1, 0)
 
 local TitleText = Instance.new("TextLabel", TitleBar)
-TitleText.Position, TitleText.Size, TitleText.BackgroundTransparency, TitleText.Text, TitleText.TextColor3, TitleText.TextSize, TitleText.Font, TitleText.TextXAlignment = UDim2.new(0, 45, 0, 0), UDim2.new(1, -50, 1, 0), 1, "🌸TỔNG HỢP | 👑VzNam Hub v3👑|🌸", Color3.fromRGB(255, 105, 180), 13, Enum.Font.SourceSansBold, Enum.TextXAlignment.Left
+TitleText.Position, TitleText.Size, TitleText.BackgroundTransparency, TitleText.Text, TitleText.TextSize, TitleText.Font, TitleText.TextXAlignment = UDim2.new(0, 45, 0, 0), UDim2.new(1, -50, 1, 0), 1, "🌸TỔNG HỢP | 👑VzNam Hub v3👑 | 🌸", 13, Enum.Font.SourceSansBold, Enum.TextXAlignment.Left
+ApplyBlackTextWhiteOutline(TitleText)
 
 local TabBarLeftScroll = Instance.new("ScrollingFrame", MainFrame)
 TabBarLeftScroll.Position, TabBarLeftScroll.Size, TabBarLeftScroll.BackgroundTransparency, TabBarLeftScroll.CanvasSize, TabBarLeftScroll.ScrollBarThickness = UDim2.new(0, 8, 0, 48), UDim2.new(0, 100, 1, -56), 1, UDim2.new(0, 0, 0, 340), 3
@@ -71,13 +79,15 @@ local function CreateCategoryContainer(visible)
     local subBar = Instance.new("Frame", frame) subBar.Size, subBar.BackgroundTransparency = UDim2.new(1, 0, 0, 28), 1
     local subLayout = Instance.new("UIListLayout", subBar) subLayout.FillDirection, subLayout.Padding = Enum.FillDirection.Horizontal, UDim.new(0, 6)
     
-    local noKeyBtn = Instance.new("TextButton", subBar) noKeyBtn.Size, noKeyBtn.BackgroundColor3, noKeyBtn.BackgroundTransparency, noKeyBtn.Text, noKeyBtn.TextColor3, noKeyBtn.Font, noKeyBtn.TextSize = UDim2.new(0.48, 0, 1, 0), Color3.fromRGB(0, 0, 0), 0.3, "no key", Color3.fromRGB(255, 105, 180), Enum.Font.SourceSansBold, 12
+    local noKeyBtn = Instance.new("TextButton", subBar) noKeyBtn.Size, noKeyBtn.BackgroundColor3, noKeyBtn.BackgroundTransparency, noKeyBtn.Text, noKeyBtn.Font, noKeyBtn.TextSize = UDim2.new(0.48, 0, 1, 0), Color3.fromRGB(0, 0, 0), 0.3, "no key", Enum.Font.SourceSansBold, 12
     Instance.new("UICorner", noKeyBtn).CornerRadius = UDim.new(0, 6)
     local nkStroke = Instance.new("UIStroke", noKeyBtn) nkStroke.Color, nkStroke.Thickness = Color3.fromRGB(255, 50, 50), 2
+    ApplyBlackTextWhiteOutline(noKeyBtn)
     
-    local hasKeyBtn = Instance.new("TextButton", subBar) hasKeyBtn.Size, hasKeyBtn.BackgroundColor3, hasKeyBtn.BackgroundTransparency, hasKeyBtn.Text, hasKeyBtn.TextColor3, hasKeyBtn.Font, hasKeyBtn.TextSize = UDim2.new(0.48, 0, 1, 0), Color3.fromRGB(0, 0, 0), 0.7, "có key", Color3.fromRGB(255, 105, 180), Enum.Font.SourceSansBold, 12
+    local hasKeyBtn = Instance.new("TextButton", subBar) hasKeyBtn.Size, hasKeyBtn.BackgroundColor3, hasKeyBtn.BackgroundTransparency, hasKeyBtn.Text, hasKeyBtn.Font, hasKeyBtn.TextSize = UDim2.new(0.48, 0, 1, 0), Color3.fromRGB(0, 0, 0), 0.7, "có key", Enum.Font.SourceSansBold, 12
     Instance.new("UICorner", hasKeyBtn).CornerRadius = UDim.new(0, 6)
     local hkStroke = Instance.new("UIStroke", hasKeyBtn) hkStroke.Color, hkStroke.Thickness = Color3.fromRGB(255, 255, 255), 1
+    ApplyBlackTextWhiteOutline(hasKeyBtn)
     
     local scrollNoKey = Instance.new("ScrollingFrame", frame) scrollNoKey.Position, scrollNoKey.Size, scrollNoKey.BackgroundTransparency, scrollNoKey.CanvasSize, scrollNoKey.ScrollBarThickness, scrollNoKey.Visible = UDim2.new(0, 0, 0, 34), UDim2.new(1, 0, 1, -34), 1, UDim2.new(0, 0, 0, 2000), 4, true
     Instance.new("UIListLayout", scrollNoKey).Padding = UDim.new(0, 8)
@@ -87,13 +97,13 @@ local function CreateCategoryContainer(visible)
     
     noKeyBtn.MouseButton1Click:Connect(function()
         scrollNoKey.Visible, scrollHasKey.Visible = true, false
-        noKeyBtn.BackgroundTransparency, noKeyBtn.TextColor3, nkStroke.Color, nkStroke.Thickness = 0.3, Color3.fromRGB(255, 105, 180), Color3.fromRGB(255, 50, 50), 2
-        hasKeyBtn.BackgroundTransparency, hasKeyBtn.TextColor3, hkStroke.Color, hkStroke.Thickness = 0.7, Color3.fromRGB(255, 105, 180), Color3.fromRGB(255, 255, 255), 1
+        noKeyBtn.BackgroundTransparency, nkStroke.Color, nkStroke.Thickness = 0.3, Color3.fromRGB(255, 50, 50), 2
+        hasKeyBtn.BackgroundTransparency, hkStroke.Color, hkStroke.Thickness = 0.7, Color3.fromRGB(255, 255, 255), 1
     end)
     hasKeyBtn.MouseButton1Click:Connect(function()
         scrollNoKey.Visible, scrollHasKey.Visible = false, true
-        hasKeyBtn.BackgroundTransparency, hasKeyBtn.TextColor3, hkStroke.Color, hkStroke.Thickness = 0.3, Color3.fromRGB(255, 105, 180), Color3.fromRGB(255, 50, 50), 2
-        noKeyBtn.BackgroundTransparency, noKeyBtn.TextColor3, nkStroke.Color, nkStroke.Thickness = 0.7, Color3.fromRGB(255, 105, 180), Color3.fromRGB(255, 255, 255), 1
+        hasKeyBtn.BackgroundTransparency, hkStroke.Color, hkStroke.Thickness = 0.3, Color3.fromRGB(255, 50, 50), 2
+        noKeyBtn.BackgroundTransparency, nkStroke.Color, nkStroke.Thickness = 0.7, Color3.fromRGB(255, 255, 255), 1
     end)
     return frame, scrollNoKey, scrollHasKey
 end
@@ -108,7 +118,7 @@ local function CreateCustomContainer(visible)
 end
 
 local tabContainers, mainTabButtons = {}, {}
-local tabNames = {"🌸STEAL AN EGG🌸", "🌸BLOX FRUIT🌸", "🌸BREAL AN STEAL AN EGG🌸", "CHƯA", "CHƯA", "👾KHÁC👾"}
+local tabNames = {"🌸STEAL AN EGG🌸", "🌸BLOX FRUIT🌸", "🌸BREAK AN STEAL AN EGG🌸", "Tab 4", "Tab 5", "👾KHÁC👾"}
 
 for i = 1, 6 do
     local isFirst = (i == 1)
@@ -121,16 +131,17 @@ for i = 1, 6 do
     end
     
     local btn = Instance.new("TextButton", TabBarLeftScroll)
-    btn.Size, btn.BackgroundColor3, btn.BackgroundTransparency, btn.Text, btn.TextColor3, btn.Font, btn.TextSize, btn.TextWrapped = UDim2.new(1, 0, 0, 38), Color3.fromRGB(0, 0, 0), isFirst and 0.3 or 0.7, tabNames[i], Color3.fromRGB(255, 105, 180), Enum.Font.SourceSansBold, 12, true
+    btn.Size, btn.BackgroundColor3, btn.BackgroundTransparency, btn.Text, btn.Font, btn.TextSize, btn.TextWrapped = UDim2.new(1, 0, 0, 38), Color3.fromRGB(0, 0, 0), isFirst and 0.3 or 0.7, tabNames[i], Enum.Font.SourceSansBold, 12, true
     Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
     local stroke = Instance.new("UIStroke", btn) stroke.Color, stroke.Thickness = isFirst and Color3.fromRGB(255, 50, 50) or Color3.fromRGB(255, 255, 255), isFirst and 2 or 1
+    ApplyBlackTextWhiteOutline(btn)
     mainTabButtons[i] = {Button = btn, Stroke = stroke}
     
     btn.MouseButton1Click:Connect(function()
         for j = 1, 6 do
             local active = (i == j)
             tabContainers[j].Container.Visible = active
-            mainTabButtons[j].Button.BackgroundTransparency, mainTabButtons[j].Button.TextColor3 = active and 0.3 or 0.7, Color3.fromRGB(255, 105, 180)
+            mainTabButtons[j].Button.BackgroundTransparency = active and 0.3 or 0.7
             mainTabButtons[j].Stroke.Color, mainTabButtons[j].Stroke.Thickness = active and Color3.fromRGB(255, 50, 50) or Color3.fromRGB(255, 255, 255), active and 2 or 1
         end
     end)
@@ -138,9 +149,10 @@ end
 
 local function AddScriptButton(scrollParent, Name, Callback)
     local Btn = Instance.new("TextButton", scrollParent)
-    Btn.Size, Btn.BackgroundColor3, Btn.BackgroundTransparency, Btn.Text, Btn.TextColor3, Btn.Font, Btn.TextSize = UDim2.new(1, 0, 0, 38), Color3.fromRGB(255, 255, 255), 0.25, Name, Color3.fromRGB(255, 105, 180), Enum.Font.SourceSansSemibold, 14
+    Btn.Size, Btn.BackgroundColor3, Btn.BackgroundTransparency, Btn.Text, Btn.Font, Btn.TextSize = UDim2.new(1, 0, 0, 38), Color3.fromRGB(255, 255, 255), 0.25, Name, Enum.Font.SourceSansSemibold, 14
     Instance.new("UICorner", Btn).CornerRadius = UDim.new(0, 8)
     local BtnStroke = Instance.new("UIStroke", Btn) BtnStroke.Color, BtnStroke.Thickness = Color3.fromRGB(255, 255, 255), 1
+    ApplyBlackTextWhiteOutline(Btn)
     
     Btn.MouseButton1Click:Connect(function()
         if LastSelectedScriptStroke then LastSelectedScriptStroke.Color, LastSelectedScriptStroke.Thickness = Color3.fromRGB(255, 255, 255), 1 end
@@ -198,9 +210,10 @@ local t6 = tabContainers[6].Scroll
 local selScript, isAuto = nil, false
 
 local dropBtn = Instance.new("TextButton", t6)
-dropBtn.Size, dropBtn.BackgroundColor3, dropBtn.Text, dropBtn.TextColor3, dropBtn.Font, dropBtn.TextSize, dropBtn.TextXAlignment = UDim2.new(1,0,0,36), Color3.fromRGB(240,240,240), " 📜 Chọn Script Auto Load...", Color3.fromRGB(255, 105, 180), Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left
+dropBtn.Size, dropBtn.BackgroundColor3, dropBtn.Text, dropBtn.Font, dropBtn.TextSize, dropBtn.TextXAlignment = UDim2.new(1,0,0,36), Color3.fromRGB(240,240,240), " 📜 Chọn Script Auto Load...", Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left
 Instance.new("UICorner", dropBtn).CornerRadius = UDim.new(0, 6)
 local dropStroke = Instance.new("UIStroke", dropBtn) dropStroke.Color = Color3.fromRGB(200,200,200)
+ApplyBlackTextWhiteOutline(dropBtn)
 
 local dropFrame = Instance.new("ScrollingFrame", t6)
 dropFrame.Size, dropFrame.BackgroundColor3, dropFrame.CanvasSize, dropFrame.ScrollBarThickness, dropFrame.Visible = UDim2.new(1,0,0,100), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false
@@ -208,31 +221,36 @@ Instance.new("UICorner", dropFrame).CornerRadius = UDim.new(0, 6)
 Instance.new("UIListLayout", dropFrame).Padding = UDim.new(0, 4)
 
 local clearBtn = Instance.new("TextButton", t6)
-clearBtn.Size, clearBtn.BackgroundColor3, clearBtn.Text, clearBtn.TextColor3, clearBtn.Font, clearBtn.TextSize = UDim2.new(1,0,0,28), Color3.fromRGB(150,150,150), "🚫 Hủy chọn Script ❌", Color3.fromRGB(255, 105, 180), Enum.Font.SourceSansBold, 12
+clearBtn.Size, clearBtn.BackgroundColor3, clearBtn.Text, clearBtn.Font, clearBtn.TextSize = UDim2.new(1,0,0,28), Color3.fromRGB(150,150,150), "🚫 Hủy chọn Script ❌", Enum.Font.SourceSansBold, 12
 Instance.new("UICorner", clearBtn).CornerRadius = UDim.new(0, 6)
+ApplyBlackTextWhiteOutline(clearBtn)
 
 local toggleAuto = Instance.new("TextButton", t6)
-toggleAuto.Size, toggleAuto.BackgroundColor3, toggleAuto.Text, toggleAuto.TextColor3, toggleAuto.Font, toggleAuto.TextSize = UDim2.new(1,0,0,34), Color3.fromRGB(200,50,50), "Auto Load Script Chạy: TẮT ❌", Color3.fromRGB(255, 105, 180), Enum.Font.SourceSansBold, 13
+toggleAuto.Size, toggleAuto.BackgroundColor3, toggleAuto.Text, toggleAuto.Font, toggleAuto.TextSize = UDim2.new(1,0,0,34), Color3.fromRGB(200,50,50), "Auto Load Script Chạy: TẮT ❌", Enum.Font.SourceSansBold, 13
 Instance.new("UICorner", toggleAuto).CornerRadius = UDim.new(0, 8)
+ApplyBlackTextWhiteOutline(toggleAuto)
 
 local toggleRejoin = Instance.new("TextButton", t6)
-toggleRejoin.Size, toggleRejoin.BackgroundColor3, toggleRejoin.Text, toggleRejoin.TextColor3, toggleRejoin.Font, toggleRejoin.TextSize = UDim2.new(1,0,0,34), getgenv().AutoRejoinActive and Color3.fromRGB(50,200,50) or Color3.fromRGB(200,50,50), getgenv().AutoRejoinActive and "Auto Rejoin Khi Văng: BẬT ✅" or "Auto Rejoin Khi Văng: TẮT ❌", Color3.fromRGB(255, 105, 180), Enum.Font.SourceSansBold, 13
+toggleRejoin.Size, toggleRejoin.BackgroundColor3, toggleRejoin.Text, toggleRejoin.Font, toggleRejoin.TextSize = UDim2.new(1,0,0,34), getgenv().AutoRejoinActive and Color3.fromRGB(50,200,50) or Color3.fromRGB(200,50,50), getgenv().AutoRejoinActive and "Auto Rejoin Khi Văng: BẬT ✅" or "Auto Rejoin Khi Văng: TẮT ❌", Enum.Font.SourceSansBold, 13
 Instance.new("UICorner", toggleRejoin).CornerRadius = UDim.new(0, 8)
+ApplyBlackTextWhiteOutline(toggleRejoin)
 
 local autoExecFile = "vznamhub_autoexec.lua"
 local isAutoExecOn = (isfile and isfile(autoExecFile)) or false
 
 local toggleAutoHub = Instance.new("TextButton", t6)
-toggleAutoHub.Size, toggleAutoHub.BackgroundColor3, toggleAutoHub.Text, toggleAutoHub.TextColor3, toggleAutoHub.Font, toggleAutoHub.TextSize = UDim2.new(1,0,0,34), isAutoExecOn and Color3.fromRGB(50,200,50) or Color3.fromRGB(200,50,50), isAutoExecOn and "Auto Load Hub Khi Vào Game: BẬT ✅" or "Auto Load Hub Khi Vào Game: TẮT ❌", Color3.fromRGB(255, 105, 180), Enum.Font.SourceSansBold, 13
+toggleAutoHub.Size, toggleAutoHub.BackgroundColor3, toggleAutoHub.Text, toggleAutoHub.Font, toggleAutoHub.TextSize = UDim2.new(1,0,0,34), isAutoExecOn and Color3.fromRGB(50,200,50) or Color3.fromRGB(200,50,50), isAutoExecOn and "Auto Load Hub Khi Vào Game: BẬT ✅" or "Auto Load Hub Khi Vào Game: TẮT ❌", Enum.Font.SourceSansBold, 13
 Instance.new("UICorner", toggleAutoHub).CornerRadius = UDim.new(0, 8)
+ApplyBlackTextWhiteOutline(toggleAutoHub)
 
 dropBtn.MouseButton1Click:Connect(function() dropFrame.Visible = not dropFrame.Visible end)
 
 local h = 0
 for _, scr in ipairs(RegisteredScripts) do
     local item = Instance.new("TextButton", dropFrame)
-    item.Size, item.BackgroundColor3, item.Text, item.TextColor3, item.Font, item.TextSize, item.TextXAlignment = UDim2.new(1,0,0,28), Color3.fromRGB(255,255,255), "  ▶ " .. scr.Name, Color3.fromRGB(255, 105, 180), Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left
+    item.Size, item.BackgroundColor3, item.Text, item.Font, item.TextSize, item.TextXAlignment = UDim2.new(1,0,0,28), Color3.fromRGB(255,255,255), "  ▶ " .. scr.Name, Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left
     Instance.new("UICorner", item).CornerRadius = UDim.new(0, 4)
+    ApplyBlackTextWhiteOutline(item)
     item.MouseButton1Click:Connect(function()
         selScript = scr
         dropBtn.Text = " 📜 Đã chọn: " .. scr.Name
