@@ -13,19 +13,23 @@ local function ApplyBlackTextWhiteOutline(textObj)
     textObj.TextStrokeTransparency = 0
 end
 
+-- Menu Hub chính (DisplayOrder = 10 nằm trên màn hình đen)
 local VzNamGui = Instance.new("ScreenGui", CoreGui) 
 VzNamGui.Name = "VzNamHubGui" 
 VzNamGui.DisplayOrder = 10 
 VzNamGui.ResetOnSpawn = false
 
+-- Màn hình đen giảm FPS phủ kín toàn màn hình (DisplayOrder = 5)
 local BlackScreenGui = Instance.new("ScreenGui", CoreGui)
 BlackScreenGui.Name = "VzNamBlackScreen"
 BlackScreenGui.DisplayOrder = 5
+BlackScreenGui.IgnoreGuiInset = true
 BlackScreenGui.ResetOnSpawn = false
 BlackScreenGui.Enabled = false
 
 local BlackFrame = Instance.new("Frame", BlackScreenGui)
 BlackFrame.Size = UDim2.new(1, 0, 1, 0)
+BlackFrame.Position = UDim2.new(0, 0, 0, 0)
 BlackFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 BlackFrame.BackgroundTransparency = 0
 BlackFrame.BorderSizePixel = 0
@@ -348,7 +352,7 @@ toggleColorBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- 3. Màn hình đen giảm FPS
+-- 3. Màn hình đen giảm FPS toàn màn hình
 local isFpsModeOn = false
 local toggleFpsBtn = Instance.new("TextButton", t6)
 toggleFpsBtn.Size, toggleFpsBtn.BackgroundColor3, toggleFpsBtn.Text, toggleFpsBtn.Font, toggleFpsBtn.TextSize, toggleFpsBtn.ZIndex = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Màn Hình Đen Giảm FPS: TẮT ❌", Enum.Font.SourceSansBold, 12, 8
@@ -368,7 +372,7 @@ toggleFpsBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- 4. Phát nhạc background (Trật tự: Nút Bật/Tắt -> Ô nhập ID tùy chỉnh -> Nút Chọn Nhạc Nền)
+-- 4. Phát nhạc background (Trật tự đúng: Bật/Tắt nhạc -> Nhập ID tùy chỉnh -> Chọn Nhạc Nền)
 local HubSound = SoundService:FindFirstChild("VzNamHubSound") or Instance.new("Sound", SoundService)
 HubSound.Name = "VzNamHubSound"
 HubSound.Looped = true
@@ -389,7 +393,7 @@ toggleMusicBtn.Size, toggleMusicBtn.BackgroundColor3, toggleMusicBtn.Text, toggl
 Instance.new("UICorner", toggleMusicBtn).CornerRadius = UDim.new(0, 6)
 ApplyBlackTextWhiteOutline(toggleMusicBtn)
 
--- Ô nhập Sound ID tùy chỉnh (nằm sát ngay trên nút chọn nhạc nền)
+-- Ô nhập Sound ID tùy chỉnh (nằm ngay trên nút chọn nhạc nền)
 local customIdBox = Instance.new("TextBox", t6)
 customIdBox.Size, customIdBox.BackgroundColor3, customIdBox.PlaceholderText, customIdBox.Text, customIdBox.Font, customIdBox.TextSize, customIdBox.ZIndex = UDim2.new(1,0,0,30), Color3.fromRGB(240,240,240), "Nhập Sound ID tùy chỉnh...", "", Enum.Font.SourceSansSemibold, 12, 8
 Instance.new("UICorner", customIdBox).CornerRadius = UDim.new(0, 6)
