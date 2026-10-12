@@ -368,7 +368,7 @@ toggleFpsBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- 4. Phát nhạc background (Ô nhập Sound ID nằm sát trên nút chọn nhạc)
+-- 4. Phát nhạc background (Trật tự: Nút Bật/Tắt -> Ô nhập ID tùy chỉnh -> Nút Chọn Nhạc Nền)
 local HubSound = SoundService:FindFirstChild("VzNamHubSound") or Instance.new("Sound", SoundService)
 HubSound.Name = "VzNamHubSound"
 HubSound.Looped = true
@@ -383,6 +383,13 @@ local presetMusics = {
 
 local currentSoundId = presetMusics[1].Id
 
+local isMusicPlaying = false
+local toggleMusicBtn = Instance.new("TextButton", t6)
+toggleMusicBtn.Size, toggleMusicBtn.BackgroundColor3, toggleMusicBtn.Text, toggleMusicBtn.Font, toggleMusicBtn.TextSize, toggleMusicBtn.ZIndex = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Phát Nhạc Background: TẮT ❌", Enum.Font.SourceSansBold, 12, 8
+Instance.new("UICorner", toggleMusicBtn).CornerRadius = UDim.new(0, 6)
+ApplyBlackTextWhiteOutline(toggleMusicBtn)
+
+-- Ô nhập Sound ID tùy chỉnh (nằm sát ngay trên nút chọn nhạc nền)
 local customIdBox = Instance.new("TextBox", t6)
 customIdBox.Size, customIdBox.BackgroundColor3, customIdBox.PlaceholderText, customIdBox.Text, customIdBox.Font, customIdBox.TextSize, customIdBox.ZIndex = UDim2.new(1,0,0,30), Color3.fromRGB(240,240,240), "Nhập Sound ID tùy chỉnh...", "", Enum.Font.SourceSansSemibold, 12, 8
 Instance.new("UICorner", customIdBox).CornerRadius = UDim.new(0, 6)
@@ -433,12 +440,6 @@ customIdBox.FocusLost:Connect(function()
         end
     end
 end)
-
-local isMusicPlaying = false
-local toggleMusicBtn = Instance.new("TextButton", t6)
-toggleMusicBtn.Size, toggleMusicBtn.BackgroundColor3, toggleMusicBtn.Text, toggleMusicBtn.Font, toggleMusicBtn.TextSize, toggleMusicBtn.ZIndex = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Phát Nhạc Background: TẮT ❌", Enum.Font.SourceSansBold, 12, 8
-Instance.new("UICorner", toggleMusicBtn).CornerRadius = UDim.new(0, 6)
-ApplyBlackTextWhiteOutline(toggleMusicBtn)
 
 toggleMusicBtn.MouseButton1Click:Connect(function()
     isMusicPlaying = not isMusicPlaying
