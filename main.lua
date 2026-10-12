@@ -145,7 +145,7 @@ local function CreateCustomContainer(visible)
     frame.Position, frame.Size, frame.BackgroundTransparency, frame.Visible, frame.ZIndex, frame.ClipsDescendants = UDim2.new(0, 114, 0, 48), UDim2.new(1, -122, 1, -56), 1, visible, 6, true
     local scroll = Instance.new("ScrollingFrame", frame) 
     scroll.Position, scroll.Size, scroll.BackgroundTransparency, scroll.ScrollBarThickness, scroll.ZIndex, scroll.ClipsDescendants = UDim2.new(0, 0, 0, 0), UDim2.new(1, 0, 1, 0), 1, 4, 7, true
-    scroll.CanvasSize = UDim2.new(0, 0, 0, 520)
+    scroll.CanvasSize = UDim2.new(0, 0, 0, 700)
     local scrollLayout = Instance.new("UIListLayout", scroll)
     scrollLayout.Padding = UDim.new(0, 8)
     scrollLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -339,22 +339,25 @@ musicDropFrame.Size, musicDropFrame.BackgroundColor3, musicDropFrame.CanvasSize,
 Instance.new("UICorner", musicDropFrame).CornerRadius = UDim.new(0, 6)
 Instance.new("UIListLayout", musicDropFrame).Padding = UDim.new(0, 4)
 
--- [LayoutOrder = 12] Thanh kéo tăng giảm âm lượng (Volume Slider) nằm sát dưới chọn nhạc
+-- [LayoutOrder = 12] Thanh kéo tăng giảm âm lượng (Volume Slider) nằm sát ngay dưới chọn nhạc
 local volumeContainer = Instance.new("Frame", t6)
 volumeContainer.LayoutOrder = 12
-volumeContainer.Size, volumeContainer.BackgroundColor3 = UDim2.new(1,0,0,32), Color3.fromRGB(240,240,240)
+volumeContainer.Size, volumeContainer.BackgroundColor3 = UDim2.new(1,0,0,36), Color3.fromRGB(240,240,240)
+volumeContainer.BorderSizePixel = 0
 Instance.new("UICorner", volumeContainer).CornerRadius = UDim.new(0, 6)
 
 local volumeLabel = Instance.new("TextLabel", volumeContainer)
-volumeLabel.Size, volumeLabel.BackgroundTransparency, volumeLabel.Text, volumeLabel.Font, volumeLabel.TextSize, volumeLabel.TextXAlignment = UDim2.new(1,0,1,0), 1, " 🔊 Âm lượng: 50%", Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left
+volumeLabel.Size, volumeLabel.Position, volumeLabel.BackgroundTransparency, volumeLabel.Text, volumeLabel.Font, volumeLabel.TextSize, volumeLabel.TextXAlignment = UDim2.new(0, 130, 1, 0), UDim2.new(0, 8, 0, 0), 1, " 🔊 Âm lượng: 50%", Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left
 ApplyBlackTextWhiteOutline(volumeLabel)
 
 local volSliderBg = Instance.new("Frame", volumeContainer)
-volSliderBg.Size, volSliderBg.Position, volSliderBg.BackgroundColor3 = UDim2.new(0, 130, 0, 8), UDim2.new(1, -140, 0.5, -4), Color3.fromRGB(200, 200, 200)
+volSliderBg.Size, volSliderBg.Position, volSliderBg.BackgroundColor3 = UDim2.new(1, -145, 0, 8), UDim2.new(0, 135, 0.5, -4), Color3.fromRGB(200, 200, 200)
+volSliderBg.BorderSizePixel = 0
 Instance.new("UICorner", volSliderBg).CornerRadius = UDim.new(1, 0)
 
 local volSliderFill = Instance.new("Frame", volSliderBg)
 volSliderFill.Size, volSliderFill.BackgroundColor3 = UDim2.new(0.5, 0, 1, 0), Color3.fromRGB(50, 200, 50)
+volSliderFill.BorderSizePixel = 0
 Instance.new("UICorner", volSliderFill).CornerRadius = UDim.new(1, 0)
 
 local isDraggingVol = false
@@ -378,6 +381,7 @@ end)
 local timeLabel = Instance.new("TextLabel", t6)
 timeLabel.LayoutOrder = 13
 timeLabel.Size, timeLabel.BackgroundColor3, timeLabel.Text, timeLabel.Font, timeLabel.TextSize, timeLabel.TextXAlignment = UDim2.new(1,0,0,30), Color3.fromRGB(240,240,240), " ⏱ Thời gian: 0:00 / 0:00", Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left
+timeLabel.BorderSizePixel = 0
 Instance.new("UICorner", timeLabel).CornerRadius = UDim.new(0, 6)
 ApplyBlackTextWhiteOutline(timeLabel)
 
