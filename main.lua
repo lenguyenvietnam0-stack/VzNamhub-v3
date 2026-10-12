@@ -105,8 +105,8 @@ local function CreateCategoryContainer(visible)
     end)
     hasKeyBtn.MouseButton1Click:Connect(function()
         scrollNoKey.Visible, scrollHasKey.Visible = false, true
-        hasKeyBtn.BackgroundTransparency, hkStroke.Color, hkStroke.Thickness = 0.3, Color3.fromRGB(255, 50, 50), 2
-        noKeyBtn.BackgroundTransparency, nkStroke.Color, nkStroke.Thickness = 0.7, Color3.fromRGB(255, 255, 255), 1
+        hasKeyBtn.BackgroundTransparency, hkStroke.Color, hkStroke.Thickness = 0.7, Color3.fromRGB(255, 255, 255), 1
+        noKeyBtn.BackgroundTransparency, nkStroke.Color, nkStroke.Thickness = 0.3, Color3.fromRGB(255, 50, 50), 2
     end)
     return frame, scrollNoKey, scrollHasKey
 end
@@ -115,8 +115,10 @@ local function CreateCustomContainer(visible)
     local frame = Instance.new("Frame", MainFrame) 
     frame.Position, frame.Size, frame.BackgroundTransparency, frame.Visible, frame.ZIndex, frame.ClipsDescendants = UDim2.new(0, 114, 0, 48), UDim2.new(1, -122, 1, -56), 1, visible, 6, true
     local scroll = Instance.new("ScrollingFrame", frame) 
-    scroll.Position, scroll.Size, scroll.BackgroundTransparency, scroll.CanvasSize, scroll.ScrollBarThickness, scroll.ZIndex, scroll.ClipsDescendants = UDim2.new(0, 0, 0, 0), UDim2.new(1, 0, 1, 0), 1, UDim2.new(0, 0, 0, 1000), 4, 7, true
-    Instance.new("UIListLayout", scroll).Padding = UDim.new(0, 8)
+    scroll.Position, scroll.Size, scroll.BackgroundTransparency, scroll.ScrollBarThickness, scroll.ZIndex, scroll.ClipsDescendants = UDim2.new(0, 0, 0, 0), UDim2.new(1, 0, 1, 0), 1, 4, 7, true
+    scroll.AutomaticCanvasSize = Enum.AutomaticCanvasSize.Y
+    local scrollLayout = Instance.new("UIListLayout", scroll)
+    scrollLayout.Padding = UDim.new(0, 8)
     return frame, scroll
 end
 
@@ -207,12 +209,6 @@ local t6 = tabContainers[6].Scroll
 t6.ClipsDescendants = true
 local selScript, isAuto = nil, false
 
-t6:GetPropertyChangedSignal("CanvasPosition"):Connect(function()
-    if dropFrame then dropFrame.Visible = false end
-    if colorDropFrame then colorDropFrame.Visible = false end
-    if musicDropFrame then musicDropFrame.Visible = false end
-end)
-
 -- 1. CHỌN SCRIPT AUTO LOAD
 local dropBtn = Instance.new("TextButton", t6)
 dropBtn.Size, dropBtn.BackgroundColor3, dropBtn.Text, dropBtn.Font, dropBtn.TextSize, dropBtn.TextXAlignment, dropBtn.ZIndex = UDim2.new(1,0,0,34), Color3.fromRGB(240,240,240), " 📜 Chọn Script Auto Load...", Enum.Font.SourceSansSemibold, 13, Enum.TextXAlignment.Left, 10
@@ -223,7 +219,8 @@ ApplyBlackTextWhiteOutline(dropBtn)
 local dropFrame = Instance.new("ScrollingFrame", t6)
 dropFrame.Size, dropFrame.BackgroundColor3, dropFrame.CanvasSize, dropFrame.ScrollBarThickness, dropFrame.Visible, dropFrame.ZIndex = UDim2.new(1,0,0,90), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 20
 Instance.new("UICorner", dropFrame).CornerRadius = UDim.new(0, 6)
-Instance.new("UIListLayout", dropFrame).Padding = UDim.new(0, 4)
+local dropLayout = Instance.new("UIListLayout", dropFrame) dropLayout.Padding = UDim.new(0, 4)
+dropFrame.AutomaticCanvasSize = Enum.AutomaticCanvasSize.Y
 
 local clearBtn = Instance.new("TextButton", t6)
 clearBtn.Size, clearBtn.BackgroundColor3, clearBtn.Text, clearBtn.Font, clearBtn.TextSize, clearBtn.ZIndex = UDim2.new(1,0,0,28), Color3.fromRGB(150,150,150), "🚫 Hủy chọn Script ❌", Enum.Font.SourceSansBold, 12, 8
@@ -304,7 +301,8 @@ ApplyBlackTextWhiteOutline(colorDropBtn)
 local colorDropFrame = Instance.new("ScrollingFrame", t6)
 colorDropFrame.Size, colorDropFrame.BackgroundColor3, colorDropFrame.CanvasSize, colorDropFrame.ScrollBarThickness, colorDropFrame.Visible, colorDropFrame.ZIndex = UDim2.new(1,0,0,100), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 20
 Instance.new("UICorner", colorDropFrame).CornerRadius = UDim.new(0, 6)
-Instance.new("UIListLayout", colorDropFrame).Padding = UDim.new(0, 4)
+local colorLayout = Instance.new("UIListLayout", colorDropFrame) colorLayout.Padding = UDim.new(0, 4)
+colorDropFrame.AutomaticCanvasSize = Enum.AutomaticCanvasSize.Y
 
 colorDropBtn.MouseButton1Click:Connect(function() 
     colorDropFrame.Visible = not colorDropFrame.Visible 
@@ -372,7 +370,7 @@ toggleFpsBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- 4. PHÁT NHẠC BACKGROUND (THỨ TỰ CHUẨN: NHẬP ID -> CHỌN NHẠC -> BẬT/TẮT NHẠC Ở DƯỚI CÙNG)
+-- 4. PHÁT NHẠC BACKGROUND (THỨ TỰ CHUẨN: Ô NHẬP ID -> CHỌN NHẠC NỀN -> BẬT/TẮT NHẠC Ở DƯỚI CÙNG)
 local HubSound = SoundService:FindFirstChild("VzNamHubSound") or Instance.new("Sound", SoundService)
 HubSound.Name = "VzNamHubSound"
 HubSound.Looped = true
@@ -402,7 +400,8 @@ ApplyBlackTextWhiteOutline(musicDropBtn)
 local musicDropFrame = Instance.new("ScrollingFrame", t6)
 musicDropFrame.Size, musicDropFrame.BackgroundColor3, musicDropFrame.CanvasSize, musicDropFrame.ScrollBarThickness, musicDropFrame.Visible, musicDropFrame.ZIndex = UDim2.new(1,0,0,90), Color3.fromRGB(250,250,250), UDim2.new(0,0,0,0), 3, false, 20
 Instance.new("UICorner", musicDropFrame).CornerRadius = UDim.new(0, 6)
-Instance.new("UIListLayout", musicDropFrame).Padding = UDim.new(0, 4)
+local musicLayout = Instance.new("UIListLayout", musicDropFrame) musicLayout.Padding = UDim.new(0, 4)
+musicDropFrame.AutomaticCanvasSize = Enum.AutomaticCanvasSize.Y
 
 -- [3] Nút Bật/Tắt Phát Nhạc Background (Nằm ở dưới cùng)
 local isMusicPlaying = false
