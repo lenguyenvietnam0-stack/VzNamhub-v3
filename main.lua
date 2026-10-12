@@ -13,9 +13,24 @@ local function ApplyBlackTextWhiteOutline(textObj)
     textObj.TextStrokeTransparency = 0
 end
 
+-- ScreenGui chính chứa Menu (DisplayOrder = 10 để nổi lên trên màn hình đen)
 local VzNamGui = Instance.new("ScreenGui", CoreGui) 
 VzNamGui.Name = "VzNamHubGui" 
+VzNamGui.DisplayOrder = 10 
 VzNamGui.ResetOnSpawn = false
+
+-- Màn hình đen giảm FPS (DisplayOrder = 5 nằm dưới menu)
+local BlackScreenGui = Instance.new("ScreenGui", CoreGui)
+BlackScreenGui.Name = "VzNamBlackScreen"
+BlackScreenGui.DisplayOrder = 5
+BlackScreenGui.ResetOnSpawn = false
+BlackScreenGui.Enabled = false
+
+local BlackFrame = Instance.new("Frame", BlackScreenGui)
+BlackFrame.Size = UDim2.new(1, 0, 1, 0)
+BlackFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+BlackFrame.BackgroundTransparency = 0
+BlackFrame.BorderSizePixel = 0
 
 local avatarUrl = "rbxassetid://6031094678"
 pcall(function() avatarUrl = Players:GetUserThumbnailAsync(localPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420) end)
@@ -320,28 +335,7 @@ toggleColorBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- 3. Bật/Tắt màn hình đen giảm FPS
-local BlackScreenGui = Instance.new("ScreenGui", CoreGui)
-BlackScreenGui.Name = "VzNamBlackScreen"
-BlackScreenGui.DisplayOrder = 999999
-BlackScreenGui.ResetOnSpawn = false
-BlackScreenGui.Enabled = false
-
-local BlackFrame = Instance.new("Frame", BlackScreenGui)
-BlackFrame.Size = UDim2.new(1, 0, 1, 0)
-BlackFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-BlackFrame.BackgroundTransparency = 0
-BlackFrame.BorderSizePixel = 0
-
-local FpsInfoText = Instance.new("TextLabel", BlackFrame)
-FpsInfoText.Size = UDim2.new(1, 0, 0, 50)
-FpsInfoText.Position = UDim2.new(0, 0, 0.5, -25)
-FpsInfoText.BackgroundTransparency = 1
-FpsInfoText.Text = "🖥️ Đang bật Màn hình đen Giảm FPS...\nBấm lại nút trong Tab Khác để mở lại màn hình."
-FpsInfoText.TextColor3 = Color3.fromRGB(255, 255, 255)
-FpsInfoText.Font = Enum.Font.SourceSansBold
-FpsInfoText.TextSize = 16
-
+-- 3. Bật/Tắt màn hình đen giảm FPS (Menu chính vẫn hiển thị rõ ràng trên nền đen)
 local isFpsModeOn = false
 local toggleFpsBtn = Instance.new("TextButton", t6)
 toggleFpsBtn.Size, toggleFpsBtn.BackgroundColor3, toggleFpsBtn.Text, toggleFpsBtn.Font, toggleFpsBtn.TextSize, toggleFpsBtn.ZIndex = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Màn Hình Đen Giảm FPS: TẮT ❌", Enum.Font.SourceSansBold, 12, 8
@@ -361,7 +355,7 @@ toggleFpsBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- 4. Phát nhạc background
+-- 4. Phát nhạc background (Chọn nhạc nền + Nhập ID tùy chỉnh + Bật/Tắt)
 local SoundService = game:GetService("SoundService")
 local HubSound = SoundService:FindFirstChild("VzNamHubSound") or Instance.new("Sound", SoundService)
 HubSound.Name = "VzNamHubSound"
