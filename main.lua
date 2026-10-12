@@ -387,7 +387,7 @@ local presetMusics = {
 
 local currentSoundId = presetMusics[1].Id
 
--- [1] Ô nhập Sound ID tùy chỉnh (nằm sát trên nút chọn nhạc)
+-- [1] Ô nhập Sound ID tùy chỉnh (nằm sát ngay trên nút chọn nhạc)
 local customIdBox = Instance.new("TextBox", t6)
 customIdBox.Size, customIdBox.BackgroundColor3, customIdBox.PlaceholderText, customIdBox.Text, customIdBox.Font, customIdBox.TextSize, customIdBox.ZIndex = UDim2.new(1,0,0,30), Color3.fromRGB(240,240,240), "Nhập Sound ID tùy chỉnh...", "", Enum.Font.SourceSansSemibold, 12, 8
 Instance.new("UICorner", customIdBox).CornerRadius = UDim.new(0, 6)
