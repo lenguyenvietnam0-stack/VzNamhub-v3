@@ -70,7 +70,6 @@ local TitleText = Instance.new("TextLabel", TitleBar)
 TitleText.Position, TitleText.Size, TitleText.BackgroundTransparency, TitleText.Text, TitleText.TextSize, TitleText.Font, TitleText.TextXAlignment, TitleText.ZIndex = UDim2.new(0, 45, 0, 0), UDim2.new(1, -85, 1, 0), 1, "🌸TỔNG HỢP | 👑VzNam Hub v3👑 | 🌸", 13, Enum.Font.SourceSansBold, Enum.TextXAlignment.Left, 7
 ApplyBlackTextWhiteOutline(TitleText)
 
--- Nút Tắt hẳn script (Góc trên bên phải)
 local CloseBtn = Instance.new("TextButton", TitleBar)
 CloseBtn.Position, CloseBtn.Size, CloseBtn.BackgroundColor3, CloseBtn.BackgroundTransparency, CloseBtn.Text, CloseBtn.Font, CloseBtn.TextSize, CloseBtn.ZIndex = UDim2.new(1, -34, 0.5, -14), UDim2.new(0, 28, 0, 28), Color3.fromRGB(200, 50, 50), 0.2, "✖", Enum.Font.SourceSansBold, 14, 8
 Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 6)
@@ -81,7 +80,6 @@ CloseBtn.MouseButton1Click:Connect(function()
     BlackScreenGui:Destroy()
 end)
 
--- Nút Kéo to nhỏ menu (Góc dưới bên phải)
 local ResizeBtn = Instance.new("TextButton", MainFrame)
 ResizeBtn.Position, ResizeBtn.Size, ResizeBtn.BackgroundColor3, ResizeBtn.BackgroundTransparency, ResizeBtn.Text, ResizeBtn.Font, ResizeBtn.TextSize, ResizeBtn.ZIndex = UDim2.new(1, -20, 1, -20), UDim2.new(0, 20, 0, 20), Color3.fromRGB(150, 150, 150), 0.5, "◢", Enum.Font.SourceSansBold, 11, 10
 Instance.new("UICorner", ResizeBtn).CornerRadius = UDim.new(0, 4)
@@ -145,7 +143,8 @@ local function CreateCustomContainer(visible)
     frame.Position, frame.Size, frame.BackgroundTransparency, frame.Visible, frame.ZIndex, frame.ClipsDescendants = UDim2.new(0, 114, 0, 48), UDim2.new(1, -122, 1, -56), 1, visible, 6, true
     local scroll = Instance.new("ScrollingFrame", frame) 
     scroll.Position, scroll.Size, scroll.BackgroundTransparency, scroll.ScrollBarThickness, scroll.ZIndex, scroll.ClipsDescendants = UDim2.new(0, 0, 0, 0), UDim2.new(1, 0, 1, 0), 1, 4, 7, true
-    scroll.CanvasSize = UDim2.new(0, 0, 0, 700)
+    scroll.AutomaticCanvasSize = Enum.AutomaticCanvasSize.Y
+    scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
     local scrollLayout = Instance.new("UIListLayout", scroll)
     scrollLayout.Padding = UDim.new(0, 8)
     scrollLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -305,7 +304,7 @@ toggleFpsBtn.Size, toggleFpsBtn.BackgroundColor3, toggleFpsBtn.Text, toggleFpsBt
 Instance.new("UICorner", toggleFpsBtn).CornerRadius = UDim.new(0, 6)
 ApplyBlackTextWhiteOutline(toggleFpsBtn)
 
--- 4. GROUP NHẠC BACKGROUND & CÁC TÍNH NĂNG ÂM LƯỢNG / THỜI LƯỢNG
+-- 4. GROUP NHẠC BACKGROUND & CÁC TÍNH NĂNG ÂM LƯỢNG / THỜI LƯỢNG SONG SONG
 local HubSound = SoundService:FindFirstChild("VzNamHubSound") or Instance.new("Sound", SoundService)
 HubSound.Name = "VzNamHubSound"
 HubSound.Looped = true
@@ -322,7 +321,7 @@ local currentSoundId = presetMusics[1].Id
 -- [LayoutOrder = 9] Ô nhập Sound ID tùy chỉnh
 local customIdBox = Instance.new("TextBox", t6)
 customIdBox.LayoutOrder = 9
-customIdBox.Size, customIdBox.BackgroundColor3, customIdBox.PlaceholderText, customIdBox.Text, customIdBox.Font, customIdBox.TextSize, customIdBox.ZIndex = UDim2.new(1,0,0,30), Color3.fromRGB(240,240,240), "Nhập Sound ID tùy chỉnh...", "", Enum.Font.SourceSansSemibold, 12, 8
+customIdBox.Size, customIdBox.BackgroundColor3, customIdBox.PlaceholderText, customIdBox.Text, customIdBox.Font, customIdBox.TextSize, customIdBox.ZIndex = UDim2.new(1,0,0,32), Color3.fromRGB(240,240,240), "Nhập Sound ID tùy chỉnh...", "", Enum.Font.SourceSansSemibold, 12, 8
 Instance.new("UICorner", customIdBox).CornerRadius = UDim.new(0, 6)
 ApplyBlackTextWhiteOutline(customIdBox)
 
@@ -339,19 +338,23 @@ musicDropFrame.Size, musicDropFrame.BackgroundColor3, musicDropFrame.CanvasSize,
 Instance.new("UICorner", musicDropFrame).CornerRadius = UDim.new(0, 6)
 Instance.new("UIListLayout", musicDropFrame).Padding = UDim.new(0, 4)
 
--- [LayoutOrder = 12] Thanh kéo tăng giảm âm lượng (Volume Slider) nằm sát ngay dưới chọn nhạc
-local volumeContainer = Instance.new("Frame", t6)
-volumeContainer.LayoutOrder = 12
-volumeContainer.Size, volumeContainer.BackgroundColor3 = UDim2.new(1,0,0,36), Color3.fromRGB(240,240,240)
-volumeContainer.BorderSizePixel = 0
-Instance.new("UICorner", volumeContainer).CornerRadius = UDim.new(0, 6)
+-- [LayoutOrder = 12] Hàng chứa: [Bên trái: Âm lượng] & [Bên phải: Thời gian]
+local musicControlRow = Instance.new("Frame", t6)
+musicControlRow.LayoutOrder = 12
+musicControlRow.Size = UDim2.new(1, 0, 0, 36)
+musicControlRow.BackgroundTransparency = 1
 
-local volumeLabel = Instance.new("TextLabel", volumeContainer)
-volumeLabel.Size, volumeLabel.Position, volumeLabel.BackgroundTransparency, volumeLabel.Text, volumeLabel.Font, volumeLabel.TextSize, volumeLabel.TextXAlignment = UDim2.new(0, 130, 1, 0), UDim2.new(0, 8, 0, 0), 1, " 🔊 Âm lượng: 50%", Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left
+local volFrame = Instance.new("Frame", musicControlRow)
+volFrame.Size, volFrame.Position, volFrame.BackgroundColor3 = UDim2.new(0.5, -4, 1, 0), UDim2.new(0, 0, 0, 0), Color3.fromRGB(240, 240, 240)
+volFrame.BorderSizePixel = 0
+Instance.new("UICorner", volFrame).CornerRadius = UDim.new(0, 6)
+
+local volumeLabel = Instance.new("TextLabel", volFrame)
+volumeLabel.Size, volumeLabel.Position, volumeLabel.BackgroundTransparency, volumeLabel.Text, volumeLabel.Font, volumeLabel.TextSize, volumeLabel.TextXAlignment = UDim2.new(0, 50, 1, 0), UDim2.new(0, 4, 0, 0), 1, "🔊 Vol:", Enum.Font.SourceSansSemibold, 11, Enum.TextXAlignment.Left
 ApplyBlackTextWhiteOutline(volumeLabel)
 
-local volSliderBg = Instance.new("Frame", volumeContainer)
-volSliderBg.Size, volSliderBg.Position, volSliderBg.BackgroundColor3 = UDim2.new(1, -145, 0, 8), UDim2.new(0, 135, 0.5, -4), Color3.fromRGB(200, 200, 200)
+local volSliderBg = Instance.new("Frame", volFrame)
+volSliderBg.Size, volSliderBg.Position, volSliderBg.BackgroundColor3 = UDim2.new(1, -56, 0, 8), UDim2.new(0, 52, 0.5, -4), Color3.fromRGB(200, 200, 200)
 volSliderBg.BorderSizePixel = 0
 Instance.new("UICorner", volSliderBg).CornerRadius = UDim.new(1, 0)
 
@@ -373,16 +376,17 @@ UserInputService.InputChanged:Connect(function(input)
         local relX = math.clamp((input.Position.X - absPos) / absSize, 0, 1)
         volSliderFill.Size = UDim2.new(relX, 0, 1, 0)
         HubSound.Volume = relX
-        volumeLabel.Text = " 🔊 Âm lượng: " .. math.floor(relX * 100) .. "%"
+        volumeLabel.Text = "🔊 " .. math.floor(relX * 100) .. "%"
     end
 end)
 
--- [LayoutOrder = 13] Hiển thị thời lượng nhạc (Time Tracker)
-local timeLabel = Instance.new("TextLabel", t6)
-timeLabel.LayoutOrder = 13
-timeLabel.Size, timeLabel.BackgroundColor3, timeLabel.Text, timeLabel.Font, timeLabel.TextSize, timeLabel.TextXAlignment = UDim2.new(1,0,0,30), Color3.fromRGB(240,240,240), " ⏱ Thời gian: 0:00 / 0:00", Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left
-timeLabel.BorderSizePixel = 0
-Instance.new("UICorner", timeLabel).CornerRadius = UDim.new(0, 6)
+local timeFrame = Instance.new("Frame", musicControlRow)
+timeFrame.Size, timeFrame.Position, timeFrame.BackgroundColor3 = UDim2.new(0.5, -4, 1, 0), UDim2.new(0.5, 4, 0, 0), Color3.fromRGB(240, 240, 240)
+timeFrame.BorderSizePixel = 0
+Instance.new("UICorner", timeFrame).CornerRadius = UDim.new(0, 6)
+
+local timeLabel = Instance.new("TextLabel", timeFrame)
+timeLabel.Size, timeLabel.BackgroundTransparency, timeLabel.Text, timeLabel.Font, timeLabel.TextSize, timeLabel.TextXAlignment = UDim2.new(1, 0, 1, 0), 1, "⏱ 0:00 / 0:00", Enum.Font.SourceSansSemibold, 11, Enum.TextXAlignment.Center
 ApplyBlackTextWhiteOutline(timeLabel)
 
 task.spawn(function()
@@ -390,18 +394,18 @@ task.spawn(function()
         pcall(function()
             if HubSound.IsPlaying and HubSound.TimeLength > 0 then
                 local cur, tot = math.floor(HubSound.TimePosition), math.floor(HubSound.TimeLength)
-                timeLabel.Text = string.format(" ⏱ Thời gian: %d:%02d / %d:%02d", math.floor(cur/60), cur%60, math.floor(tot/60), tot%60)
+                timeLabel.Text = string.format("⏱ %d:%02d/%d:%02d", math.floor(cur/60), cur%60, math.floor(tot/60), tot%60)
             else
-                timeLabel.Text = " ⏱ Thời gian: 0:00 / 0:00 (Đã dừng)"
+                timeLabel.Text = "⏱ 0:00 / 0:00"
             end
         end)
     end
 end)
 
--- [LayoutOrder = 14] Nút Bật/Tắt Phát Nhạc Background (Ở dưới cùng)
+-- [LayoutOrder = 13] Nút Bật/Tắt Nhạc Background ở dưới cùng
 local isMusicPlaying = false
 local toggleMusicBtn = Instance.new("TextButton", t6)
-toggleMusicBtn.LayoutOrder = 14
+toggleMusicBtn.LayoutOrder = 13
 toggleMusicBtn.Size, toggleMusicBtn.BackgroundColor3, toggleMusicBtn.Text, toggleMusicBtn.Font, toggleMusicBtn.TextSize, toggleMusicBtn.ZIndex = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Phát Nhạc Background: TẮT ❌", Enum.Font.SourceSansBold, 12, 8
 Instance.new("UICorner", toggleMusicBtn).CornerRadius = UDim.new(0, 6)
 ApplyBlackTextWhiteOutline(toggleMusicBtn)
