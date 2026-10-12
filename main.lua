@@ -237,6 +237,8 @@ Hub.AddScriptButton(tc[2].HasKeyScroll, "3. TeddyHub(có key)", function() repea
 Hub.AddScriptButton(tc[2].HasKeyScroll, "4. Gravity Hub(có key)", function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-GravityHub/BloxFruit/refs/heads/main/Main.lua"))() end)
 Hub.AddScriptButton(tc[2].HasKeyScroll, "5. Realkid hub(có key)", function() loadstring(game:HttpGet("https://raw.githubusercontent.com/realkidhub/realkid/refs/heads/main/main.lua"))() end)
 Hub.AddScriptButton(tc[2].HasKeyScroll, "6. BananaHub(có key)", function() repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer getgenv().Team = "Marines" loadstring(game:HttpGet("https://raw.githubusercontent.com/obiyeueim/vthangsitink/main/BananaHub.lua"))() end)
+local Hub = getgenv().VzHub
+local tc = Hub.TabContainers
 
 -- TAB 3
 Hub.AddScriptButton(tc[3].NoKeyScroll, "1. break and steal an egg(không sài dc nx)", function() loadstring(game:HttpGet("https://raw.githubusercontent.com/joustingmatch/Ouroboros/main/loader.lua"))() end)
@@ -249,10 +251,10 @@ Hub.AddScriptButton(tc[4].HasKeyScroll, "1. Tên Script Có Key (Tab 4)", functi
 -- TAB 5
 Hub.AddScriptButton(tc[5].NoKeyScroll, "1. Tên Script No Key (Tab 5)", function() end)
 Hub.AddScriptButton(tc[5].HasKeyScroll, "1. Tên Script Có Key (Tab 5)", function() end)
-local Hub = getgenv().VzHub
-local t6 = Hub.TabContainers[6].Scroll
+
+-- TAB 6: KHÁC & CẤU HÌNH GIAO DIỆN
+local t6 = tc[6].Scroll
 t6.ClipsDescendants = false
-local selScript, isAuto = nil, false
 
 local dropBtn = Instance.new("TextButton", t6)
 dropBtn.LayoutOrder = 1
@@ -316,6 +318,8 @@ toggleFpsBtn.LayoutOrder = 8
 toggleFpsBtn.Size, toggleFpsBtn.BackgroundColor3, toggleFpsBtn.Text, toggleFpsBtn.Font, toggleFpsBtn.TextSize, toggleFpsBtn.ZIndex = UDim2.new(1,0,0,32), Color3.fromRGB(200,50,50), "Màn Hình Đen Giảm FPS: TẮT ❌", Enum.Font.SourceSansBold, 12, 8
 Instance.new("UICorner", toggleFpsBtn).CornerRadius = UDim.new(0, 6)
 Hub.ApplyBlackTextWhiteOutline(toggleFpsBtn)
+local Hub = getgenv().VzHub
+local t6 = Hub.TabContainers[6].Scroll
 
 local HubSound = Hub.SoundService:FindFirstChild("VzNamHubSound") or Instance.new("Sound", Hub.SoundService)
 HubSound.Name = "VzNamHubSound"
@@ -419,135 +423,187 @@ toggleMusicBtn.Size, toggleMusicBtn.BackgroundColor3, toggleMusicBtn.Text, toggl
 Instance.new("UICorner", toggleMusicBtn).CornerRadius = UDim.new(0, 6)
 Hub.ApplyBlackTextWhiteOutline(toggleMusicBtn)
 
-dropBtn.MouseButton1Click:Connect(function() 
-    dropFrame.Visible = not dropFrame.Visible 
-    colorDropFrame.Visible = false
-    musicDropFrame.Visible = false
-end)
+-- Lấy lại các nút từ phần 4 thông qua LayoutOrder để gán sự kiện chuẩn xác
+local dropBtn = t6:FindFirstChildWhichIsA("TextButton") -- hoặc tìm theo thứ tự
+-- Đơn giản nhất là gán sự kiện cho các thành phần:
+local children = t6:GetChildren()
+local dropBtnReal, dropFrameReal, clearBtnReal, toggleAutoReal, colorDropBtnReal, colorDropFrameReal, toggleColorBtnReal, toggleFpsBtnReal, musicDropBtnReal, musicDropFrameReal, toggleMusicBtnReal
+
+for _, child in ipairs(children) do
+    if child:IsA("TextButton") then
+        if child.LayoutOrder == 1 then dropBtnReal = child
+        elseif child.LayoutOrder == 3 then clearBtnReal = child
+        elseif child.LayoutOrder == 4 then toggleAutoReal = child
+        elseif child.LayoutOrder == 5 then colorDropBtnReal = child
+        elseif child.LayoutOrder == 7 then toggleColorBtnReal = child
+        elseif child.LayoutOrder == 8 then toggleFpsBtnReal = child
+        elseif child.LayoutOrder == 10 then musicDropBtnReal = child
+        elseif child.LayoutOrder == 13 then toggleMusicBtnReal = child
+        end
+    elseif child:IsA("ScrollingFrame") then
+        if child.LayoutOrder == 2 then dropFrameReal = child
+        elseif child.LayoutOrder == 6 then colorDropFrameReal = child
+        elseif child.LayoutOrder == 11 then musicDropFrameReal = child
+        end
+    end
+end
+
+local selScript, isAuto = nil, false
+
+if dropBtnReal and dropFrameReal then
+    dropBtnReal.MouseButton1Click:Connect(function() 
+        dropFrameReal.Visible = not dropFrameReal.Visible 
+        if colorDropFrameReal then colorDropFrameReal.Visible = false end
+        if musicDropFrameReal then musicDropFrameReal.Visible = false end
+    end)
+end
 
 local h = 0
-for _, scr in ipairs(Hub.RegisteredScripts) do
-    local item = Instance.new("TextButton", dropFrame)
-    item.Size, item.BackgroundColor3, item.Text, item.Font, item.TextSize, item.TextXAlignment, item.ZIndex = UDim2.new(1,0,0,28), Color3.fromRGB(255,255,255), "  ▶ " .. scr.Name, Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left, 31
-    Instance.new("UICorner", item).CornerRadius = UDim.new(0, 4)
-    Hub.ApplyBlackTextWhiteOutline(item)
-    item.MouseButton1Click:Connect(function()
-        selScript = scr
-        dropBtn.Text = " 📜 Đã chọn: " .. scr.Name
-        dropFrame.Visible = false
-        dropStroke.Color = Color3.fromRGB(255,50,50)
-    end)
-    h = h + 32
-end
-dropFrame.CanvasSize = UDim2.new(0,0,0,h)
-
-clearBtn.MouseButton1Click:Connect(function()
-    selScript = nil
-    dropBtn.Text = " 📜 Chọn Script Auto Load..."
-    dropStroke.Color = Color3.fromRGB(200,200,200)
-    if isAuto then
-        isAuto = false
-        toggleAuto.BackgroundColor3 = Color3.fromRGB(200,50,50)
-        toggleAuto.Text = "Auto Load Script Chạy: TẮT ❌"
+if dropFrameReal then
+    for _, scr in ipairs(Hub.RegisteredScripts) do
+        local item = Instance.new("TextButton", dropFrameReal)
+        item.Size, item.BackgroundColor3, item.Text, item.Font, item.TextSize, item.TextXAlignment, item.ZIndex = UDim2.new(1,0,0,28), Color3.fromRGB(255,255,255), "  ▶ " .. scr.Name, Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left, 31
+        Instance.new("UICorner", item).CornerRadius = UDim.new(0, 4)
+        Hub.ApplyBlackTextWhiteOutline(item)
+        item.MouseButton1Click:Connect(function()
+            selScript = scr
+            if dropBtnReal then dropBtnReal.Text = " 📜 Đã chọn: " .. scr.Name end
+            dropFrameReal.Visible = false
+        end)
+        h = h + 32
     end
-end)
-
-toggleAuto.MouseButton1Click:Connect(function()
-    if not selScript then dropBtn.Text = " ⚠️ Bạn chưa chọn script!" return end
-    isAuto = not isAuto
-    if isAuto then
-        toggleAuto.BackgroundColor3 = Color3.fromRGB(50,200,50)
-        toggleAuto.Text = "Auto Load Script Chạy: BẬT ✅"
-        pcall(selScript.Callback)
-    else
-        toggleAuto.BackgroundColor3 = Color3.fromRGB(200,50,50)
-        toggleAuto.Text = "Auto Load Script Chạy: TẮT ❌"
-    end
-end)
-
-colorDropBtn.MouseButton1Click:Connect(function() 
-    colorDropFrame.Visible = not colorDropFrame.Visible 
-    dropFrame.Visible = false
-    musicDropFrame.Visible = false
-end)
-
-local ch = 0
-for _, cItem in ipairs(colorList) do
-    local cBtn = Instance.new("TextButton", colorDropFrame)
-    cBtn.Size, cBtn.BackgroundColor3, cBtn.Text, cBtn.Font, cBtn.TextSize, cBtn.TextXAlignment, cBtn.ZIndex = UDim2.new(1,0,0,26), Color3.fromRGB(255,255,255), " " .. cItem.Name, Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left, 31
-    Instance.new("UICorner", cBtn).CornerRadius = UDim.new(0, 4)
-    Hub.ApplyBlackTextWhiteOutline(cBtn)
-    cBtn.MouseButton1Click:Connect(function()
-        selectedColorObj = cItem
-        colorDropBtn.Text = " 🎨 Đã chọn: " .. cItem.Name
-        colorDropFrame.Visible = false
-    end)
-    ch = ch + 30
+    dropFrameReal.CanvasSize = UDim2.new(0,0,0,h)
 end
-colorDropFrame.CanvasSize = UDim2.new(0,0,0,ch)
 
-toggleColorBtn.MouseButton1Click:Connect(function()
-    isColorApplied = not isColorApplied
-    if isColorApplied then
-        toggleColorBtn.BackgroundColor3 = Color3.fromRGB(50,200,50)
-        toggleColorBtn.Text = "Màu Menu Tùy Chỉnh: BẬT ✅"
-        if selectedColorObj.Color then
-            Hub.RainbowGradient.Enabled = false
-            Hub.MainFrame.BackgroundColor3 = selectedColorObj.Color
+if clearBtnReal and toggleAutoReal and dropBtnReal then
+    clearBtnReal.MouseButton1Click:Connect(function()
+        selScript = nil
+        dropBtnReal.Text = " 📜 Chọn Script Auto Load..."
+        if isAuto then
+            isAuto = false
+            toggleAutoReal.BackgroundColor3 = Color3.fromRGB(200,50,50)
+            toggleAutoReal.Text = "Auto Load Script Chạy: TẮT ❌"
+        end
+    end)
+
+    toggleAutoReal.MouseButton1Click:Connect(function()
+        if not selScript then dropBtnReal.Text = " ⚠️ Bạn chưa chọn script!" return end
+        isAuto = not isAuto
+        if isAuto then
+            toggleAutoReal.BackgroundColor3 = Color3.fromRGB(50,200,50)
+            toggleAutoReal.Text = "Auto Load Script Chạy: BẬT ✅"
+            pcall(selScript.Callback)
         else
+            toggleAutoReal.BackgroundColor3 = Color3.fromRGB(200,50,50)
+            toggleAutoReal.Text = "Auto Load Script Chạy: TẮT ❌"
+        end
+    end)
+end
+
+local colorList = {
+    {Name = "🌈 Màu Cầu Vồng (Gốc)", Color = nil},
+    {Name = "🌸 Hồng Kẹo Đắng", Color = Color3.fromRGB(255, 105, 180)},
+    {Name = "🔴 Đỏ Đậm", Color = Color3.fromRGB(220, 20, 60)},
+    {Name = "🔵 Xanh Dương Neon", Color = Color3.fromRGB(0, 191, 255)},
+    {Name = "🟢 Xanh Lá Cây", Color = Color3.fromRGB(50, 205, 50)},
+    {Name = "🟡 Vàng Nổi Bật", Color = Color3.fromRGB(255, 215, 0)},
+    {Name = "🟣 Tím Mộng Mơ", Color = Color3.fromRGB(138, 43, 226)},
+    {Name = "⬛ Xám Tối Elegant", Color = Color3.fromRGB(50, 50, 50)}
+}
+local selectedColorObj = colorList[1]
+local isColorApplied = false
+
+if colorDropBtnReal and colorDropFrameReal then
+    colorDropBtnReal.MouseButton1Click:Connect(function() 
+        colorDropFrameReal.Visible = not colorDropFrameReal.Visible 
+        if dropFrameReal then dropFrameReal.Visible = false end
+        if musicDropFrameReal then musicDropFrameReal.Visible = false end
+    end)
+
+    local ch = 0
+    for _, cItem in ipairs(colorList) do
+        local cBtn = Instance.new("TextButton", colorDropFrameReal)
+        cBtn.Size, cBtn.BackgroundColor3, cBtn.Text, cBtn.Font, cBtn.TextSize, cBtn.TextXAlignment, cBtn.ZIndex = UDim2.new(1,0,0,26), Color3.fromRGB(255,255,255), " " .. cItem.Name, Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left, 31
+        Instance.new("UICorner", cBtn).CornerRadius = UDim.new(0, 4)
+        Hub.ApplyBlackTextWhiteOutline(cBtn)
+        cBtn.MouseButton1Click:Connect(function()
+            selectedColorObj = cItem
+            colorDropBtnReal.Text = " 🎨 Đã chọn: " .. cItem.Name
+            colorDropFrameReal.Visible = false
+        end)
+        ch = ch + 30
+    end
+    colorDropFrameReal.CanvasSize = UDim2.new(0,0,0,ch)
+end
+
+if toggleColorBtnReal then
+    toggleColorBtnReal.MouseButton1Click:Connect(function()
+        isColorApplied = not isColorApplied
+        if isColorApplied then
+            toggleColorBtnReal.BackgroundColor3 = Color3.fromRGB(50,200,50)
+            toggleColorBtnReal.Text = "Màu Menu Tùy Chỉnh: BẬT ✅"
+            if selectedColorObj.Color then
+                Hub.RainbowGradient.Enabled = false
+                Hub.MainFrame.BackgroundColor3 = selectedColorObj.Color
+            else
+                Hub.RainbowGradient.Enabled = true
+                Hub.MainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            end
+        else
+            toggleColorBtnReal.BackgroundColor3 = Color3.fromRGB(200,50,50)
+            toggleColorBtnReal.Text = "Màu Menu Tùy Chỉnh: TẮT ❌"
             Hub.RainbowGradient.Enabled = true
             Hub.MainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         end
-    else
-        toggleColorBtn.BackgroundColor3 = Color3.fromRGB(200,50,50)
-        toggleColorBtn.Text = "Màu Menu Tùy Chỉnh: TẮT ❌"
-        Hub.RainbowGradient.Enabled = true
-        Hub.MainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    end
-end)
+    end)
+end
 
-toggleFpsBtn.MouseButton1Click:Connect(function()
-    isFpsModeOn = not isFpsModeOn
-    if isFpsModeOn then
-        toggleFpsBtn.BackgroundColor3 = Color3.fromRGB(50,200,50)
-        toggleFpsBtn.Text = "Màn Hình Đen Giảm FPS: BẬT ✅"
-        Hub.BlackScreenGui.Enabled = true
-    else
-        toggleFpsBtn.BackgroundColor3 = Color3.fromRGB(200,50,50)
-        toggleFpsBtn.Text = "Màn Hình Đen Giảm FPS: TẮT ❌"
-        Hub.BlackScreenGui.Enabled = false
-    end
-end)
-
-musicDropBtn.MouseButton1Click:Connect(function() 
-    musicDropFrame.Visible = not musicDropFrame.Visible 
-    dropFrame.Visible = false
-    colorDropFrame.Visible = false
-end)
-
-local mh = 0
-for _, mItem in ipairs(presetMusics) do
-    local mBtn = Instance.new("TextButton", musicDropFrame)
-    mBtn.Size, mBtn.BackgroundColor3, mBtn.Text, mBtn.Font, mBtn.TextSize, mBtn.TextXAlignment, mBtn.ZIndex = UDim2.new(1,0,0,26), Color3.fromRGB(255,255,255), " " .. mItem.Name, Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left, 31
-    Instance.new("UICorner", mBtn).CornerRadius = UDim.new(0, 4)
-    Hub.ApplyBlackTextWhiteOutline(mBtn)
-    mBtn.MouseButton1Click:Connect(function()
-        currentSoundId = mItem.Id
-        musicDropBtn.Text = " 🎵 Đã chọn: " .. mItem.Name
-        musicDropFrame.Visible = false
-        if HubSound.IsPlaying then
-            HubSound.SoundId = "rbxassetid://" .. currentSoundId
-            HubSound:Play()
+if toggleFpsBtnReal then
+    toggleFpsBtnReal.MouseButton1Click:Connect(function()
+        isFpsModeOn = not isFpsModeOn
+        if isFpsModeOn then
+            toggleFpsBtnReal.BackgroundColor3 = Color3.fromRGB(50,200,50)
+            toggleFpsBtnReal.Text = "Màn Hình Đen Giảm FPS: BẬT ✅"
+            Hub.BlackScreenGui.Enabled = true
+        else
+            toggleFpsBtnReal.BackgroundColor3 = Color3.fromRGB(200,50,50)
+            toggleFpsBtnReal.Text = "Màn Hình Đen Giảm FPS: TẮT ❌"
+            Hub.BlackScreenGui.Enabled = false
         end
     end)
-    mh = mh + 30
 end
-musicDropFrame.CanvasSize = UDim2.new(0,0,0,mh)
+
+if musicDropBtnReal and musicDropFrameReal then
+    musicDropBtnReal.MouseButton1Click:Connect(function() 
+        musicDropFrameReal.Visible = not musicDropFrameReal.Visible 
+        if dropFrameReal then dropFrameReal.Visible = false end
+        if colorDropFrameReal then colorDropFrameReal.Visible = false end
+    end)
+
+    local mh = 0
+    for _, mItem in ipairs(presetMusics) do
+        local mBtn = Instance.new("TextButton", musicDropFrameReal)
+        mBtn.Size, mBtn.BackgroundColor3, mBtn.Text, mBtn.Font, mBtn.TextSize, mBtn.TextXAlignment, mBtn.ZIndex = UDim2.new(1,0,0,26), Color3.fromRGB(255,255,255), " " .. mItem.Name, Enum.Font.SourceSansSemibold, 12, Enum.TextXAlignment.Left, 31
+        Instance.new("UICorner", mBtn).CornerRadius = UDim.new(0, 4)
+        Hub.ApplyBlackTextWhiteOutline(mBtn)
+        mBtn.MouseButton1Click:Connect(function()
+            currentSoundId = mItem.Id
+            musicDropBtnReal.Text = " 🎵 Đã chọn: " .. mItem.Name
+            musicDropFrameReal.Visible = false
+            if HubSound.IsPlaying then
+                HubSound.SoundId = "rbxassetid://" .. currentSoundId
+                HubSound:Play()
+            end
+        end)
+        mh = mh + 30
+    end
+    musicDropFrameReal.CanvasSize = UDim2.new(0,0,0,mh)
+end
 
 customIdBox.FocusLost:Connect(function()
     if customIdBox.Text ~= "" and tonumber(customIdBox.Text) then
         currentSoundId = customIdBox.Text
-        musicDropBtn.Text = " 🎵 ID Custom: " .. currentSoundId
+        if musicDropBtnReal then musicDropBtnReal.Text = " 🎵 ID Custom: " .. currentSoundId end
         if HubSound.IsPlaying then
             HubSound.SoundId = "rbxassetid://" .. currentSoundId
             HubSound:Play()
@@ -555,18 +611,22 @@ customIdBox.FocusLost:Connect(function()
     end
 end)
 
-toggleMusicBtn.MouseButton1Click:Connect(function()
-    isMusicPlaying = not isMusicPlaying
-    if isMusicPlaying then
-        toggleMusicBtn.BackgroundColor3 = Color3.fromRGB(50,200,50)
-        toggleMusicBtn.Text = "Phát Nhạc Background: BẬT ✅"
-        HubSound.SoundId = "rbxassetid://" .. currentSoundId
-        HubSound:Play()
-    else
-        toggleMusicBtn.BackgroundColor3 = Color3.fromRGB(200,50,50)
-        toggleMusicBtn.Text = "Phát Nhạc Background: TẮT ❌"
-        HubSound:Stop()
-    end
-end)
+if toggleMusicBtnReal then
+    toggleMusicBtnReal.MouseButton1Click:Connect(function()
+        isMusicPlaying = not isMusicPlaying
+        if isMusicPlaying then
+            toggleMusicBtnReal.BackgroundColor3 = Color3.fromRGB(50,200,50)
+            toggleMusicBtnReal.Text = "Phát Nhạc Background: BẬT ✅"
+            HubSound.SoundId = "rbxassetid://" .. currentSoundId
+            HubSound:Play()
+        else
+            toggleMusicBtnReal.BackgroundColor3 = Color3.fromRGB(200,50,50)
+            toggleMusicBtnReal.Text = "Phát Nhạc Background: TẮT ❌"
+            HubSound:Stop()
+        end
+    end)
+end
 
-Hub.ToggleBtn.MouseButton1Click:Connect(function() Hub.MainFrame.Visible = not Hub.MainFrame.Visible end)
+Hub.ToggleBtn.MouseButton1Click:Connect(function() 
+    Hub.MainFrame.Visible = not Hub.MainFrame.Visible 
+end)
