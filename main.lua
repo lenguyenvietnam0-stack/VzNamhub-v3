@@ -158,7 +158,7 @@ local function CreateCustomContainer(visible)
 end
 
 local tabContainers, mainTabButtons = {}, {}
-local tabNames = {"🌸STEAL AN EGG🌸", "🌸BLOX FRUIT🌸", "🌸BREAK AN STEAL AN EGG🌸", "Tab 4", "Tab 5", "👾KHÁC👾"}
+local tabNames = {"🌸 STEAL AN EGG 🌸", "🌸 BLOX FRUIT 🌸", "🌸 BREAK AN STEAL AN EGG 🌸", "Tab 4", "Tab 5", "👾 KHÁC 👾"}
 
 for i = 1, 6 do
     local isFirst = (i == 1)
@@ -320,6 +320,7 @@ local presetMusics = {
     {Name = "🎶 Phonk Beat", Id = "1843404008"},
     {Name = "🎵 Anime Relaxing", Id = "9043887091"},
     {Name = "🎶 EDM Hype", Id = "1837871000"}
+    {Name = "🎶 Như Một Người Dưng", Id = "91897652967267"}
 }
 local currentSoundId = presetMusics[1].Id
 
